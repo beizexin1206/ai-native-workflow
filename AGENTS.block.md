@@ -95,6 +95,11 @@ npm i -g @lark-project/meegle && meegle auth login   # 未装时
   本会话代开的 MR 也一样。review / 评论 / 处理 comment 都可以做。
 - 合并方式 squash，一个 MR 一个 commit。MR 标题和描述会成为 commit message，值得花时间写。
 - MR 存活 ≤ 3 天；更久就 rebase 到最新主干，并在描述里说明「是否与进行中的 MR 冲突」。
+- 合并后清理，别让本地攒一堆死分支：
+
+  ```bash
+  git checkout main && git pull --ff-only && git branch -d <分支> && git fetch --prune origin
+  ```
 
 **哪些必须人审、哪些可以快过：**
 
@@ -113,6 +118,19 @@ npm i -g @lark-project/meegle && meegle auth login   # 未装时
 | lint | `<项目填>` | 0 error |
 | 类型 | `<项目填>` | 0 error |
 | 测试 | `<项目填>` | 0 failing |
+
+### 沟通
+
+读者是对这个项目有完整上下文的工程师，不需要背景铺垫、鼓励性措辞、或对刚说过的话的复述。
+
+- **结论前置。** 先给决策/结论/行动项，再给依据。
+- **结构化对比用表格**，不用散文堆砌。
+- **跳过显而易见的推理。** 证据能直推结论就直接给。
+- **不要元叙述。** 不说「如果你同意我就开始」、不预告自己接下来要做什么 —— 直接做，或直接给方案。
+- **不要装饰性排版。** 不要分隔线、box 字符、每段都加标题。
+- **密度自检：砍掉一半后信息量是否不变？** 是就砍。对 review 的回复不应超过 review 本身的三成。
+
+（写代码、注释、文档、commit、MR 一律中文 —— 这是团队环境，不做中英分离。）
 
 ### 命令
 
