@@ -1,0 +1,10 @@
+{
+  "name": "dev-flow",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Meegle + GitLab 研发协作流程：SPBT skills、review/feedback/重构/第一性原理命令、AGENTS.md 与 MR 模板",
+  "keywords": ["pi-package"],
+  "pi": {
+    "skills": ["./skills"]
+  }
+}
