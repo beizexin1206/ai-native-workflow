@@ -38,6 +38,19 @@ docs/templates/merge-request.md             ← 源目录 templates/merge-reques
 放一个 `README.md` 说明它装什么：每次 `/p` 的选型理由、每次 `/b` 踩的坑和留的债，
 文件名按主题（`docs/intent/order-state.md`）。这是 MR 里 Why 段唯一的原料来源。
 
+同时建 `docs/intent/GOTCHAS.md`（空表即可）：踩了会疼、但从代码看不出来的地方。
+
+### 3.5 提醒项目补三处占位
+
+注入的块里有三处需要项目自己填，**列出来提醒用户**，不要替他猜：
+
+- 「本项目的事实来源」第 5 条起 —— 架构文档 / 设计系统 / ADR 在哪
+- 「合并前本地验证」表 —— 真实的 lint / typecheck / test 命令
+- 已知的坑 —— 老项目通常一抓一大把，先记三条最疼的
+
+能从 `package.json` / `Makefile` / CI 配置里**读到**的命令可以直接填进去，
+读不到的留占位，别编。
+
 ### 4. 项目专属 skill 的位置
 
 建 `.agents/skills/`（Codex 与 pi 原生读），并建两条软链让另外两个工具也看得到：

@@ -11,6 +11,7 @@ description: Implements the next pending task test-first, one slice at a time, c
 - `tasks/todo.md` 必须存在（没有 → 先跑 `/p`）
 - 工作区干净：除规划产物外有未提交改动就停下来问。逐任务提交会把无关改动裹进去，
   破坏干净回滚。
+- 已与主干同步：`git fetch origin && git pull --rebase origin <主干>`
 
 ## 循环（一次一个任务）
 
@@ -29,6 +30,8 @@ description: Implements the next pending task test-first, one slice at a time, c
 ## 规则
 
 - **一次一片。** 做完一个任务停，不要顺手做下一个。
+- **本地验证，不要推上去试。** 能本地跑的必须本地跑通再提交；
+  把 CI / 部署当迭代循环，一轮 10 分钟换本地 1 秒。
 - **不越界。** SPEC 的「非目标」是硬边界，想加就先回去改 SPEC。
 - 遇到下面情况**停下来问**，不要硬闯：
   - 测试改不通或构建坏了且没有明显修法 → 用 `/ct` 或直接问
