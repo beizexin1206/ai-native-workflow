@@ -1,7 +1,10 @@
 #!/usr/bin/env sh
 # dev-flow 步骤 1：把 skills 装到这台机器上（不进任何项目仓库）。
 #
-#   curl -fsSL https://raw.githubusercontent.com/kid7st/dev-flow/main/install.sh | sh
+#   git clone https://github.com/kid7st/dev-flow.git ~/.dev-flow && sh ~/.dev-flow/install.sh
+#
+# 仓库是私有的, 所以用 git clone 而不是 curl raw URL（raw 对私有库返回 404）。
+# 重复执行安全：已克隆则 pull。
 #
 # 装完后在任意项目里跑 /init 完成步骤 2。
 # 升级：cd ~/.dev-flow && git pull —— 软链自动跟上。

@@ -8,8 +8,10 @@ Meegle（飞书项目）+ GitLab 的研发协作流程，打包成 skills、AGEN
 **步骤 1 · 每台机器一次** —— 装能力（skills 不进任何项目仓库）：
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kid7st/dev-flow/main/install.sh | sh
+git clone https://github.com/kid7st/dev-flow.git ~/.dev-flow && sh ~/.dev-flow/install.sh
 ```
+
+仓库私有，所以用 `git clone` 而不是 `curl`（raw URL 对私有库 404）。重复执行安全：已克隆则 `pull`。
 
 克隆到 `~/.dev-flow`，软链到 `~/.agents/skills`（Codex + pi）、`~/.claude/skills`、`~/.qoder/skills`。
 升级：`cd ~/.dev-flow && git pull`，软链自动跟上。

@@ -80,5 +80,7 @@ npm i -g @lark-project/meegle && meegle auth login   # 未装时
 | `/ct` | 跳出补丁循环，从第一性原理重新框定问题 |
 
 没有这些命令？跑一次：
-`curl -fsSL https://raw.githubusercontent.com/kid7st/dev-flow/main/install.sh | sh`
+```bash
+git clone https://github.com/kid7st/dev-flow.git ~/.dev-flow && sh ~/.dev-flow/install.sh
+```
 <!-- dev-flow:end -->
