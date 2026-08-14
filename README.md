@@ -1,4 +1,4 @@
-# dev-flow
+# ai-native-workflow
 
 Meegle（飞书项目）+ GitLab 的研发协作流程，打包成 skills、AGENTS.md 约定和两套模板。
 支持 Claude Code、Codex、Qoder、pi —— 同一份 `SKILL.md`，不维护多份副本。
@@ -8,13 +8,13 @@ Meegle（飞书项目）+ GitLab 的研发协作流程，打包成 skills、AGEN
 **步骤 1 · 每台机器一次** —— 装能力（skills 不进任何项目仓库）：
 
 ```bash
-git clone https://github.com/kid7st/dev-flow.git ~/.dev-flow && sh ~/.dev-flow/install.sh
+git clone https://github.com/kid7st/ai-native-workflow.git ~/.ai-native-workflow && sh ~/.ai-native-workflow/install.sh
 ```
 
 仓库私有，所以用 `git clone` 而不是 `curl`（raw URL 对私有库 404）。重复执行安全：已克隆则 `pull`。
 
-克隆到 `~/.dev-flow`，软链到 `~/.agents/skills`（Codex + pi）、`~/.claude/skills`、`~/.qoder/skills`。
-升级：`cd ~/.dev-flow && git pull`，软链自动跟上。
+克隆到 `~/.ai-native-workflow`，软链到 `~/.agents/skills`（Codex + pi）、`~/.claude/skills`、`~/.qoder/skills`。
+升级：`cd ~/.ai-native-workflow && git pull`，软链自动跟上。
 
 **步骤 2 · 每个仓库一次** —— 装约定（这些要 commit）：
 
@@ -52,7 +52,7 @@ git clone https://github.com/kid7st/dev-flow.git ~/.dev-flow && sh ~/.dev-flow/i
 ## 结构
 
 ```
-dev-flow/
+ai-native-workflow/
 ├── install.sh              # 步骤 1
 ├── AGENTS.block.md         # 注入项目 AGENTS.md 的内容
 ├── skills/                 # 10 个 skill，四个工具通用

@@ -1,23 +1,23 @@
 ---
 name: init
-description: Initialises the current repository for the Meegle plus GitLab flow by injecting the AGENTS.md block, MR and work item templates, and the docs/intent directory. Use when onboarding an existing repo to this flow, when the user says /init, or when asked to set up dev-flow in a project.
+description: Initialises the current repository for the Meegle plus GitLab flow by injecting the AGENTS.md block, MR and work item templates, and the docs/intent directory. Use when onboarding an existing repo to this flow, when the user says /init, or when asked to set up ai-native-workflow in a project.
 ---
 
 # /init —— 把当前仓库接入这套流程
 
-装的是**约定**，不是能力。skills 已经在机器上（`~/.dev-flow`），这一步只往仓库里放
+装的是**约定**，不是能力。skills 已经在机器上（`~/.ai-native-workflow`），这一步只往仓库里放
 需要被 review、被版本固定、被队友 clone 到的东西。
 
 ## 做五件事
 
-源目录 `${DEV_FLOW_HOME:-$HOME/.dev-flow}`（不存在就告诉用户先跑 `install.sh`，不要自己造内容）。
+源目录 `${AI_NATIVE_WORKFLOW_HOME:-$HOME/.ai-native-workflow}`（不存在就告诉用户先跑 `install.sh`，不要自己造内容）。
 
 ### 1. 注入 `AGENTS.md`
 
 把源目录的 `AGENTS.block.md` 内容写进仓库根 `AGENTS.md`：
 
 - 没有 `AGENTS.md` → 新建，写入该块
-- 有 → 找 `<!-- dev-flow:start -->` … `<!-- dev-flow:end -->`：
+- 有 → 找 `<!-- ai-native-workflow:start -->` … `<!-- ai-native-workflow:end -->`：
   - 找到 → **只替换这两行之间的内容**（升级路径），项目自己写的部分一个字不动
   - 没找到 → 追加到文件末尾
 
@@ -60,7 +60,7 @@ ln -sfn ../.agents/skills .qoder/skills
 
 ## 规则
 
-- **不覆盖用户已有内容。** 只有 `dev-flow` 标记块之间的内容可以被替换。
+- **不覆盖用户已有内容。** 只有 `ai-native-workflow` 标记块之间的内容可以被替换。
 - 不生成 `.gitignore` 条目：这些文件本来就该进 git。
 - 不改 CI 配置、不装依赖、不碰源码。
 - 仓库不是 git 仓库时先停下来问。

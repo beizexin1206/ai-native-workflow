@@ -1,17 +1,17 @@
 #!/usr/bin/env sh
-# dev-flow 步骤 1：把 skills 装到这台机器上（不进任何项目仓库）。
+# ai-native-workflow 步骤 1：把 skills 装到这台机器上（不进任何项目仓库）。
 #
-#   git clone https://github.com/kid7st/dev-flow.git ~/.dev-flow && sh ~/.dev-flow/install.sh
+#   git clone https://github.com/kid7st/ai-native-workflow.git ~/.ai-native-workflow && sh ~/.ai-native-workflow/install.sh
 #
 # 仓库是私有的, 所以用 git clone 而不是 curl raw URL（raw 对私有库返回 404）。
 # 重复执行安全：已克隆则 pull。
 #
 # 装完后在任意项目里跑 /init 完成步骤 2。
-# 升级：cd ~/.dev-flow && git pull —— 软链自动跟上。
+# 升级：cd ~/.ai-native-workflow && git pull —— 软链自动跟上。
 set -eu
 
-REPO="${DEV_FLOW_REPO:-https://github.com/kid7st/dev-flow.git}"
-HOME_DIR="${DEV_FLOW_HOME:-$HOME/.dev-flow}"
+REPO="${AI_NATIVE_WORKFLOW_REPO:-https://github.com/kid7st/ai-native-workflow.git}"
+HOME_DIR="${AI_NATIVE_WORKFLOW_HOME:-$HOME/.ai-native-workflow}"
 
 if [ -d "$HOME_DIR/.git" ]; then
   echo "更新 $HOME_DIR"

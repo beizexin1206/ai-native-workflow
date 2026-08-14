@@ -1,4 +1,4 @@
-<!-- dev-flow:start -->
+<!-- ai-native-workflow:start -->
 ## 研发协作约定
 
 需求在 **Meegle**（飞书项目），代码在 **GitLab**，讨论在飞书。三者的分工：
@@ -81,6 +81,6 @@ npm i -g @lark-project/meegle && meegle auth login   # 未装时
 
 没有这些命令？跑一次：
 ```bash
-git clone https://github.com/kid7st/dev-flow.git ~/.dev-flow && sh ~/.dev-flow/install.sh
+git clone https://github.com/kid7st/ai-native-workflow.git ~/.ai-native-workflow && sh ~/.ai-native-workflow/install.sh
 ```
-<!-- dev-flow:end -->
+<!-- ai-native-workflow:end -->
