@@ -148,6 +148,6 @@ npm i -g @lark-project/meegle && meegle auth login   # 未装时
 
 没有这些命令？跑一次：
 ```bash
-git clone https://github.com/kid7st/ai-native-workflow.git ~/.ai-native-workflow && sh ~/.ai-native-workflow/install.sh
+curl -fsSL https://raw.githubusercontent.com/kid7st/ai-native-workflow/main/install.sh | sh
 ```
 <!-- ai-native-workflow:end -->

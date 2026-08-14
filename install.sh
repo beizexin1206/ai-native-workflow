@@ -1,9 +1,8 @@
 #!/usr/bin/env sh
 # ai-native-workflow 步骤 1：把 skills 装到这台机器上（不进任何项目仓库）。
 #
-#   git clone https://github.com/kid7st/ai-native-workflow.git ~/.ai-native-workflow && sh ~/.ai-native-workflow/install.sh
+#   curl -fsSL https://raw.githubusercontent.com/kid7st/ai-native-workflow/main/install.sh | sh
 #
-# 仓库是私有的, 所以用 git clone 而不是 curl raw URL（raw 对私有库返回 404）。
 # 重复执行安全：已克隆则 pull。
 #
 # 装完后在任意项目里跑 /init 完成步骤 2。
