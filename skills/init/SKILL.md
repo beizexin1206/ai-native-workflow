@@ -66,6 +66,21 @@ ln -sfn ../.agents/skills .qoder/skills
 
 先检查 `.claude/skills` / `.qoder/skills` 是否已存在且不是软链；是就跳过并报告，不覆盖。
 
+### 4.5 CI 兜底（问过再做）
+
+**先问用户要不要**，同意了再动 `.gitlab-ci.yml`：
+
+> 要不要加一个 MR 约定检查 job？它检查：标题带工作项号、六段齐全非空、
+> Why 段引用的 `docs/intent/*.md` 真实存在。不齐则 MR 变红。
+
+同意 → 复制 `templates/mr-contract-check.sh` 到 `.gitlab/mr-contract-check.sh`，
+把 `templates/gitlab-ci-mr-contract.yml` 里的 job **合并**进项目的 `.gitlab-ci.yml`
+（读一遍现有 stage 结构再插，**不要整份覆盖**）。没有 `.gitlab-ci.yml` 就新建。
+
+不管做不做，都提醒一句：**「未 resolve 的讨论不能合入」在 GitLab 项目设置里有原生开关**
+（Settings → Merge requests → Merge checks → All threads must be resolved），
+打开它比写 CI 可靠，一分钟的事。
+
 ### 5. 报告
 
 列出：写了哪些文件、跳过了哪些（为什么）、建了哪些软链。

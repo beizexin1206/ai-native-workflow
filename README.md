@@ -57,7 +57,9 @@ ai-native-workflow/
 ├── AGENTS.block.md         # 注入项目 AGENTS.md 的内容
 ├── skills/                 # 10 个 skill，四个工具通用
 ├── templates/
-│   ├── meegle-work-item.md # 需求模板：一份讲清需求，指导产品/研发/测试
-│   └── merge-request.md    # MR 模板：What/Why/How/Scope/Tests/注意点
+│   ├── meegle-work-item.md          # 需求模板：一份讲清需求，指导产品/研发/测试
+│   ├── merge-request.md             # MR 模板：What/Why/How/Scope/Tests/注意点
+│   ├── mr-contract-check.sh         # MR 约定的机器检查（可本地跑）
+│   └── gitlab-ci-mr-contract.yml    # 上面那个检查的 CI job（/init 时询问是否加）
 └── package.json            # pi package manifest（可选：pi install git:...）
 ```

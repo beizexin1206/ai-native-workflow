@@ -1,0 +1,15 @@
+# MR 约定检查 —— 把「六段齐全、标题带工作项号、Why 有真实出处」变成机器判断。
+#
+# 用法：把这个 job 合进项目的 .gitlab-ci.yml，并把 mr-contract-check.sh 放到
+# .gitlab/mr-contract-check.sh。不要整份覆盖项目原有的 .gitlab-ci.yml。
+#
+# 只做确定性检查。「改了行为却没改文档」这类靠猜的检测**故意不做** ——
+# 它必然误报，误报的检查会被人加 allow_failure 关掉，然后所有检查一起失效。
+
+mr-contract:
+  stage: .pre                      # 项目没有 .pre 就换成最早的那个 stage
+  image: alpine:3
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  script:
+    - sh .gitlab/mr-contract-check.sh
