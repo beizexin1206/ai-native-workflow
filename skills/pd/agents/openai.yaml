@@ -1,0 +1,4 @@
+interface:
+  display_name: "产品需求定义"
+  short_description: "将业务调研整理为产品设计与可执行的 Meegle 工作项"
+  default_prompt: "使用 $pd 把业务信息整理为产品需求、产品设计和 Meegle 工作项草稿。"
