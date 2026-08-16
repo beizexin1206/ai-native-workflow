@@ -62,7 +62,7 @@ ln -sfn ../.agents/skills .qoder/skills
 ```
 
 这里放**这个项目专有**的 skill（部署流程、领域词汇表、内部服务约定），
-不放 `/s /p /b /t` —— 那些在机器级，升级一次全项目生效。
+不放 `/pd /bl /s /p /b /t` —— 那些在机器级，升级一次全项目生效。
 
 先检查 `.claude/skills` / `.qoder/skills` 是否已存在且不是软链；是就跳过并报告，不覆盖。
 

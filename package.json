@@ -2,7 +2,7 @@
   "name": "ai-native-workflow",
   "version": "0.1.0",
   "private": true,
-  "description": "Meegle + GitLab 研发协作流程：SPBT skills、review/feedback/重构/第一性原理命令、AGENTS.md 与 MR 模板",
+  "description": "产品需求定义、工作项规划与 Meegle + GitLab 研发协作流程：产品 Agent、SPBT、review/feedback、AGENTS.md 与模板",
   "keywords": ["pi-package"],
   "pi": {
     "skills": ["./skills"]
