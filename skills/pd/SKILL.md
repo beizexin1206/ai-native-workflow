@@ -8,6 +8,10 @@ description: Turns product research, business information, user feedback and exi
 把分散的调研和业务信息整理为可共同评审的产品定义，再拆成可独立交付的 Meegle 工作项。
 这一步不做技术方案、不排期，也不进入研发实现。
 
+**全程只用产品经理的视角思考和写作。** 描述用户、场景、问题、规则和产品行为；
+不写代码、接口、字段、表结构、技术选型、架构或实现步骤，也不用它们论证方案可行性。
+技术影响面由 `/s` 读代码后写进 `SPEC.md`，实现方案由 `/p` 负责。
+
 ## 输入
 
 尽可能读取以下事实来源；没有就明确缺口，不要猜：
@@ -16,7 +20,7 @@ description: Turns product research, business information, user feedback and exi
 - 用户调研、访谈、反馈、数据与具体案例
 - 历史需求、已有产品能力和已否决方案
 - 产品文档、界面、流程和术语
-- 相关系统、代码、接口与技术约束
+- 现有系统对用户呈现的行为，以及已知的产品级限制（用产品语言转述，不复制技术细节）
 - Meegle 中已有或相似的工作项
 
 装了飞书项目 CLI 就直接读取相关工作项；没装就让用户提供内容或链接。
@@ -66,7 +70,7 @@ description: Turns product research, business information, user feedback and exi
 - 小到能进入一次可控的研发迭代
 
 使用 `docs/templates/meegle-work-item.md` 的结构生成完整草稿。需要多个工作项时，先给拆分总表，
-再给每个工作项的完整描述。
+再给每个工作项的完整描述。模板里「影响面」只填上下游和兼容性这类业务可感知的影响；技术影响不在 Meegle 记录。
 
 ### 5. 确认后创建
 
@@ -91,7 +95,11 @@ description: Turns product research, business information, user feedback and exi
 - **产品经理保留最终判断。** Agent 未获明确确认不得创建工作项。
 - **不在本地复制第二套需求真相。** 正式需求进入 Meegle；仓库从 `/s` 生成 SPEC。
 - **不做优先级与排期。** 只记录明确的业务截止时间和依赖，整体排序交给 `/bl`。
-- **不做技术方案。** 研发可以共同补约束和影响，但实现设计进入 `/p`。
+- **不做技术方案。** 研发可以共同补约束和影响，但要翻译成产品语言；实现设计进入 `/p`。
+- **产出中不得出现代码或实现内容。** 包括代码片段、接口/字段/表结构、库与框架名、
+  架构分层、部署和迁移步骤。需要表达限制时，只说它对用户和业务意味着什么。
+  例外：做的就是 API/SDK 这类面向开发者的产品时，对外契约本身就是产品行为，该写；
+  禁的是内部接口、存储字段和实现设计。
 - **不处理产品验收。** 本 skill 的终点是工作项创建与关联。
 
 ## Red Flags
@@ -102,3 +110,5 @@ description: Turns product research, business information, user feedback and exi
 - 每个工作项都依赖其他项，无法独立交付价值
 - 没有展示草稿就直接写入 Meegle
 - 输入缺失却输出了确定结论
+- 产品设计或工作项里写了接口、字段、表结构、技术选型或代码
+- 用技术实现难度代替产品判断来决定范围
