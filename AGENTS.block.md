@@ -46,8 +46,8 @@ docs/templates/   工作项与 MR 模板
 ### 主线
 
 ```
-/sw → /pd → Meegle 工作项 → /bl → /s → /p → /b → /t → /rv → MR → /fb → 合入 → 回写状态
-全景  产品定义   创建与拆分    排序排期  SPEC   plan   代码   测试   自审        处理 comment
+/sw → /pd → Meegle 工作项 → /bl → /s → /p → /b → /t → /rv → /mr → /fb → 合入 → 回写状态
+全景  产品定义   创建与拆分    排序排期  SPEC   plan   代码   测试   自审   开 MR  处理 comment
 ```
 
 `/sw` 是产研测共用的只读启动命令。`/pd` 与 `/bl` 是产品 Agent 的两个能力：前者定义产品需求、
@@ -94,7 +94,7 @@ docs/templates/   工作项与 MR 模板
 | 角色 | 对什么负责 | 主要动作 | 交出什么 |
 |---|---|---|---|
 | 产品 | 产品需求与产品设计、工作项拆分、优先级与排期 | `/pd` → 创建 Meegle 工作项 → `/bl`，入选迭代后参与 `/s` | 产品定义、工作项及父子/依赖关系、优先级与迭代 |
-| 研发 | 实现与上下文沉淀 | `/p` → `/b` → `/t` → `/rv` → MR → `/fb` | plan/todo、代码+测试、六段 MR |
+| 研发 | 实现与上下文沉淀 | `/p` → `/b` → `/t` → `/rv` → `/mr` → `/fb` | plan/todo、代码+测试、六段 MR |
 | 测试 | 验收与回归口径 | 按工作项验收标准逐条验 | 验收结论、复现测试、回归结果 |
 | 任何人 | review | `/rv <MR>` | MR 上逐条 resolve 的 discussion |
 
@@ -118,7 +118,7 @@ npm i -g @lark-project/meegle && meegle auth login   # 未装时
 
 ### GitLab 约定
 
-- 评审叫 **MR**，用 `glab`。MR 描述按 `docs/templates/merge-request.md` 六段写：
+- 评审叫 **MR**，用 `glab`，开 MR 走 `/mr`。描述按 `docs/templates/merge-request.md` 六段写：
   What / Why / How / Scope / Tests / 注意点。
 - **四段以上的内容由 agent 从仓库产物汇总**（SPEC、plan、commits、测试结果）。
   唯独 **Why** 无法事后重建 —— 它必须在 `/p` `/b` 阶段当场写进 `docs/intent/`。
@@ -200,6 +200,7 @@ npm i -g @lark-project/meegle && meegle auth login   # 未装时
 | `/b` | 实现下一个任务：测试先行、逐任务提交、坑与债进 `docs/intent/` |
 | `/t` | 用例化 + 全量回归；修 bug 先写复现测试 |
 | `/rv` | 五轴 review。开 MR 前自审，或 `/rv <MR号>` 审别人的 |
+| `/mr` | 汇总六段描述、自检、`glab mr create`（永不合并） |
 | `/fb` | 拉 MR 的 comment（含行内），逐条处理并 resolve |
 | `/sw` | 项目全景：目标、位置、进度、下一步、风险 |
 | `/rf` | 重构扫描：先结构后局部，只提案 |

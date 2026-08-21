@@ -35,6 +35,7 @@ curl -fsSL https://raw.githubusercontent.com/kid7st/ai-native-workflow/main/inst
 | `/b` | 实现下一个任务：测试先行、逐任务提交、坑与债进 `docs/intent/` |
 | `/t` | 验收标准用例化、全量回归、Prove-It 修 bug |
 | `/rv` | 语义 review。开 MR 前自审，或 `/rv <MR>` 审别人的（findings 落成可 resolve 的 discussion） |
+| `/mr` | 开 MR：六段描述从仓库产物汇总，Why 无出处则报缺口不编 |
 | `/fb` | 拉全 MR 反馈（含行内），逐条判断、修或驳、回复后 resolve |
 | `/sw` | 项目全景：目标、位置、进度、下一步、风险（读仓库 + GitLab + Meegle） |
 | `/rf` | 重构扫描：先结构后局部，只提案 |
@@ -59,7 +60,7 @@ curl -fsSL https://raw.githubusercontent.com/kid7st/ai-native-workflow/main/inst
 ai-native-workflow/
 ├── install.sh              # 步骤 1
 ├── AGENTS.block.md         # 注入项目 AGENTS.md 的内容
-├── skills/                 # 12 个 skill，四个工具通用
+├── skills/                 # 13 个 skill，四个工具通用
 ├── templates/
 │   ├── meegle-work-item.md          # 产品需求、设计、拆分与研测输入模板
 │   ├── merge-request.md             # MR 模板：What/Why/How/Scope/Tests/注意点
