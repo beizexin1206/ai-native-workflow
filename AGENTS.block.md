@@ -25,7 +25,9 @@ AGENTS.md         协作约定与项目事实（本文件）
 SPEC.md           当前工作项的需求规格（/s 产出，合入后归档）
 tasks/            plan.md + todo.md（/p 产出）
 docs/intent/      为什么这么选、否决了什么 + GOTCHAS.md（碰了会出事的地方）
-docs/templates/   工作项与 MR 模板
+docs/design/      技术设计方案（/td 产出）
+docs/templates/   工作项、MR、技术设计、测试用例与质量报告模板
+testing/          test-cases.md + quality-report.html（/t 产出）
 <项目填>          源码根目录
 <项目填>          测试根目录，按测试分层分子目录
 ```
@@ -46,8 +48,8 @@ docs/templates/   工作项与 MR 模板
 ### 主线
 
 ```
-/sw → /pd → Meegle 工作项 → /bl → /s → /p → /b → /t → /rv → /mr → /fb → 合入 → 回写状态
-全景  产品定义   创建与拆分    排序排期  SPEC   plan   代码   测试   自审   开 MR  处理 comment
+/sw → /pd → Meegle 工作项 → /bl → /s → /td → /p → /b → /t → /rv → /mr → /fb → 合入 → 回写状态
+全景  产品定义   创建与拆分    排序排期  SPEC   技设   plan   代码   测试   自审   开 MR  处理 comment
 ```
 
 `/sw` 是产研测共用的只读启动命令。`/pd` 与 `/bl` 是产品 Agent 的两个能力：前者定义产品需求、
@@ -94,8 +96,8 @@ docs/templates/   工作项与 MR 模板
 | 角色 | 对什么负责 | 主要动作 | 交出什么 |
 |---|---|---|---|
 | 产品 | 产品需求与产品设计、工作项拆分、优先级与排期 | `/pd` → 创建 Meegle 工作项 → `/bl`，入选迭代后参与 `/s` | 产品定义、工作项及父子/依赖关系、优先级与迭代 |
-| 研发 | 实现与上下文沉淀 | `/p` → `/b` → `/t` → `/rv` → `/mr` → `/fb` | plan/todo、代码+测试、六段 MR |
-| 测试 | 验收与回归口径 | 按工作项验收标准逐条验 | 验收结论、复现测试、回归结果 |
+| 研发 | 技术设计、实现与上下文沉淀 | `/td` → `/p` → `/b` → `/t` → `/rv` → `/mr` → `/fb` | 技术设计、plan/todo、代码+测试、六段 MR |
+| 测试 | 验收与回归口径 | `/t`，按工作项验收标准逐条验 | 测试用例集、HTML 质量报告、复现测试、回归结果 |
 | 任何人 | review | `/rv <MR>` | MR 上逐条 resolve 的 discussion |
 
 这是**责任边界，不是权限边界**。产品和测试同样可以跑 `/b` 改代码、开 MR。
@@ -196,9 +198,10 @@ npm i -g @lark-project/meegle && meegle auth login   # 未装时
 | `/pd` | 调研与业务输入 → 产品需求、产品设计、Meegle 工作项拆分与创建 |
 | `/bl` | 全部产品工作项 → 状态整理、优先级与迭代排期 |
 | `/s` | 工作项 → `SPEC.md` |
+| `/td` | SPEC + 代码事实 → `docs/design/technical-design.md` |
 | `/p` | SPEC → `tasks/plan.md` + `tasks/todo.md`，选型理由进 `docs/intent/` |
 | `/b` | 实现下一个任务：测试先行、逐任务提交、坑与债进 `docs/intent/` |
-| `/t` | 用例化 + 全量回归；修 bug 先写复现测试 |
+| `/t` | 用例化 + 全量回归；产出 `testing/test-cases.md` 与 `testing/quality-report.html` |
 | `/rv` | 五轴 review。开 MR 前自审，或 `/rv <MR号>` 审别人的 |
 | `/mr` | 汇总六段描述、自检、`glab mr create`（永不合并） |
 | `/fb` | 拉 MR 的 comment（含行内），逐条处理并 resolve |

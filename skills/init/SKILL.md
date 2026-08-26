@@ -28,6 +28,9 @@ description: Initialises the current repository for the Meegle plus GitLab flow 
 ```
 docs/templates/meegle-work-item.md          ← 源目录 templates/meegle-work-item.md
 docs/templates/merge-request.md             ← 源目录 templates/merge-request.md
+docs/templates/technical-design.md          ← 源目录 templates/technical-design.md
+docs/templates/test-cases.md                ← 源目录 templates/test-cases.md
+docs/templates/quality-report.html          ← 源目录 templates/quality-report.html
 .gitlab/merge_request_templates/default.md  ← 同 merge-request.md（GitLab 开 MR 时自动带出）
 ```
 

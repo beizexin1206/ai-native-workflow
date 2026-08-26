@@ -5,6 +5,19 @@ description: Turns acceptance criteria into executable tests, runs the full regr
 
 # /t —— 用例化、回归、修 bug
 
+## 评审产物
+
+测试过程要留下两份给人 review 的固定产物：
+
+- `testing/test-cases.md`：需求追溯、验收/对抗/回归用例、测试数据和逐条执行记录
+- `testing/quality-report.html`：执行总览、需求一致性、覆盖缺口、缺陷、环境、风险与上线建议
+
+首次生成时分别使用 `templates/test-cases.md` 和 `templates/quality-report.html`
+（接入项目后位于 `docs/templates/`）。已有文件要增量更新，不得用空模板覆盖历史记录。
+
+质量报告只能汇总实际执行证据：没有运行的用例写 `NOT RUN`，环境阻塞写 `BLOCKED`，
+代码分析不能写成运行通过。报告不得包含密码、Token、Cookie、未脱敏账号或生产数据。
+
 ## 分层覆盖：逐层判断，涉及就补
 
 四层的定义、依赖处理和运行时机见项目 AGENTS.md 的「测试分层」。`/t` 的职责是
@@ -52,6 +65,9 @@ description: Turns acceptance criteria into executable tests, runs the full regr
 
 这份结论是 MR 「Tests」段的原料。**「测试通过」四个字不是结论**，
 没说清跑了什么、挂了什么、为什么可以放，等于没验。
+
+执行完成后把结论同步写入 `testing/test-cases.md` 的执行记录，并据此生成或更新
+`testing/quality-report.html`。上线建议必须能从 P0 结果、阻断缺陷、关键回归和残留风险直接推出。
 
 ## 定位问题时
 
