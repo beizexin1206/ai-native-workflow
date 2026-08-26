@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>质量报告 — {{功能或工作项名称}}</title>
+    <style>
+      :root { --ink:#172033; --muted:#667085; --line:#e4e7ec; --bg:#f5f7fa; --card:#fff; --blue:#2563eb; --green:#067647; --red:#b42318; --orange:#b54708; }
+      * { box-sizing:border-box; }
+      body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; line-height:1.6; }
+      .wrap { max-width:1120px; margin:0 auto; padding:24px; }
+      header,section { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:24px 28px; margin-bottom:18px; }
+      header { background:#111827; color:#fff; }
+      h1 { margin:0 0 8px; font-size:24px; }
+      h2 { margin:0 0 16px; padding-left:10px; border-left:4px solid var(--blue); font-size:19px; }
+      h3 { margin:20px 0 10px; font-size:15px; }
+      .meta { color:#cbd5e1; font-size:13px; }
+      .verdict { display:inline-block; margin-top:14px; padding:7px 16px; border-radius:7px; font-weight:700; }
+      .go { background:#047857; } .conditional { background:#b45309; } .block { background:#b91c1c; }
+      .kpi { display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:12px; }
+      .kpi div { background:#f8fafc; border:1px solid var(--line); border-radius:9px; padding:12px; text-align:center; }
+      .kpi b { display:block; font-size:24px; }
+      .notice { margin:0 0 16px; padding:10px 12px; border-radius:8px; background:#eff6ff; color:#1e40af; font-size:13px; }
+      table { width:100%; border-collapse:collapse; margin:10px 0; font-size:13px; }
+      th,td { border:1px solid var(--line); padding:8px 10px; text-align:left; vertical-align:top; }
+      th { background:#f2f4f7; }
+      .pass { color:var(--green); font-weight:700; } .fail { color:var(--red); font-weight:700; } .warn { color:var(--orange); font-weight:700; }
+      code { padding:1px 5px; border-radius:4px; background:#f2f4f7; word-break:break-all; }
+      @media (max-width:760px) { .wrap{padding:12px} header,section{padding:18px} .kpi{grid-template-columns:1fr 1fr} table{display:block;overflow:auto} }
+    </style>
+  </head>
+  <body>
+    <main class="wrap">
+      <header>
+        <h1>质量报告 — {{功能或工作项名称}}</h1>
+        <div class="meta">工作项：{{ID/链接}} ｜ 被测版本：{{分支/提交}} ｜ 环境：{{环境}} ｜ 报告时间：{{YYYY-MM-DD HH:mm}} ｜ 负责人：{{姓名}}</div>
+        <!-- 上线建议只保留一个状态：go / conditional / block -->
+        <span class="verdict block">上线建议：{{允许上线 / 有条件上线 / 阻塞上线}}</span>
+      </header>
+
+      <section>
+        <h2>核验总览</h2>
+        <p class="notice">本报告是本轮测试执行的只读快照，由测试用例集、实际执行结果和缺陷系统状态汇总生成；不在本报告中反向维护测试用例或缺陷状态。</p>
+        <p class="notice">计数口径：获得终态 = PASS + FAIL + BLOCKED；计划用例 = 获得终态 + NOT RUN；执行率 = 获得终态 ÷ 计划用例。</p>
+        <div class="kpi">
+          <div><b>{{N}}</b>计划用例</div>
+          <div><b>{{N}}</b>获得终态</div>
+          <div><b>{{百分比}}</b>执行率</div>
+          <div><b class="pass">{{N}}</b>PASS</div>
+          <div><b class="fail">{{N}}</b>FAIL</div>
+          <div><b class="warn">{{N}}</b>BLOCKED</div>
+          <div><b>{{N}}</b>NOT RUN</div>
+        </div>
+        <table>
+          <thead><tr><th>核验维度</th><th>结论</th><th>证据与说明</th></tr></thead>
+          <tbody>
+            <tr><td>需求追溯</td><td class="{{pass/fail/warn}}">{{结论}}</td><td>{{需求与用例是否一一对应}}</td></tr>
+            <tr><td>测试执行</td><td class="{{pass/fail/warn}}">{{结论}}</td><td>{{执行范围、未执行项及原因}}</td></tr>
+            <tr><td>证据有效性</td><td class="{{pass/fail/warn}}">{{结论}}</td><td>{{验证方式与证据是否一致}}</td></tr>
+            <tr><td>关键风险</td><td class="{{pass/fail/warn}}">{{结论}}</td><td>{{TOP 风险是否闭环}}</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>一、需求一致性</h2>
+        <h3>1.1 需求覆盖</h3>
+        <table>
+          <thead><tr><th>需求/验收标准</th><th>对应用例</th><th>结果</th><th>说明</th></tr></thead>
+          <tbody><tr><td>{{SPEC 条目}}</td><td>{{TC-ID}}</td><td class="{{pass/fail/warn}}">{{结果}}</td><td>{{证据或偏差}}</td></tr></tbody>
+        </table>
+        <h3>1.2 实现偏差与遗漏</h3>
+        <table>
+          <thead><tr><th>类型</th><th>需求</th><th>实际</th><th>影响</th><th>处置</th></tr></thead>
+          <tbody><tr><td>{{偏差/遗漏}}</td><td>{{预期}}</td><td>{{实际}}</td><td>{{影响}}</td><td>{{缺陷或待办}}</td></tr></tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>二、测试覆盖度</h2>
+        <table>
+          <thead><tr><th>模块/层级</th><th>已覆盖</th><th>未覆盖</th><th>原因与风险</th></tr></thead>
+          <tbody>
+            <tr><td>{{模块或单元/接口/集成/E2E}}</td><td>{{场景}}</td><td>{{场景}}</td><td>{{原因、负责人、补测时间}}</td></tr>
+          </tbody>
+        </table>
+        <h3>需人工介入</h3>
+        <p>{{人工验证、登录、权限、外部依赖或裁决事项；没有写“无”}}</p>
+      </section>
+
+      <section>
+        <h2>三、缺陷清单</h2>
+        <h3>{{严重/一般}} ｜ {{BUG-ID/缺陷系统链接}} ｜ {{一句话问题}}</h3>
+        <table>
+          <tbody>
+            <tr><th>关联用例</th><td>{{TC-ID}}</td></tr>
+            <tr><th>复现步骤</th><td>{{最小步骤}}</td></tr>
+            <tr><th>预期 / 实际</th><td>{{预期}} / {{实际}}</td></tr>
+            <tr><th>证据</th><td>{{日志、请求响应、截图或报告链接}}</td></tr>
+            <tr><th>影响范围</th><td>{{用户、数据和链路}}</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>四、环境与版本</h2>
+        <table>
+          <tbody>
+            <tr><th>测试环境</th><td>{{地址/环境名，不写凭据}}</td></tr>
+            <tr><th>系统版本</th><td>{{仓库、分支、提交、镜像或构建号}}</td></tr>
+            <tr><th>测试数据</th><td>{{数据编号、用途、恢复状态}}</td></tr>
+            <tr><th>执行工具</th><td>{{自动化框架、浏览器、脚本版本}}</td></tr>
+            <tr><th>原始执行证据</th><td>{{CI、测试日志、截图或机器报告链接}}</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section>
+        <h2>五、风险与上线建议</h2>
+        <table>
+          <thead><tr><th>上线条件</th><th>状态</th><th>依据</th></tr></thead>
+          <tbody>
+            <tr><td>P0 用例全部通过</td><td class="{{pass/fail}}">{{满足/不满足}}</td><td>{{证据}}</td></tr>
+            <tr><td>阻断缺陷清零</td><td class="{{pass/fail}}">{{满足/不满足}}</td><td>{{证据}}</td></tr>
+            <tr><td>关键回归通过</td><td class="{{pass/fail}}">{{满足/不满足}}</td><td>{{证据}}</td></tr>
+            <tr><td>残留风险有负责人和处置时间</td><td class="{{pass/fail}}">{{满足/不满足}}</td><td>{{证据}}</td></tr>
+          </tbody>
+        </table>
+        <h3>最终建议</h3>
+        <p><strong>{{允许上线 / 有条件上线 / 阻塞上线}}</strong>：{{一句话依据和必须完成的条件}}</p>
+      </section>
+
+      <section>
+        <h2>人类待办</h2>
+        <table>
+          <thead><tr><th>#</th><th>事项</th><th>负责人</th><th>截止时间</th><th>状态</th></tr></thead>
+          <tbody><tr><td>1</td><td>{{待决策/修复/补测事项}}</td><td>{{姓名}}</td><td>{{日期}}</td><td>{{状态}}</td></tr></tbody>
+        </table>
+      </section>
+    </main>
+  </body>
+</html>

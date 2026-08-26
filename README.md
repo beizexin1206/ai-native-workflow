@@ -16,6 +16,9 @@ curl -fsSL https://raw.githubusercontent.com/kid7st/ai-native-workflow/main/inst
 克隆到 `~/.ai-native-workflow`，软链到 `~/.agents/skills`（Codex + pi）、`~/.claude/skills`、`~/.qoder/skills`。
 升级：`cd ~/.ai-native-workflow && git pull`，软链自动跟上。
 
+升级后如果仓库新增了模板，已有项目需要重新执行一次 `/init`。`/init` 只补充缺失模板，
+不会覆盖项目中已经存在的模板。
+
 **步骤 2 · 每个仓库一次** —— 装约定（这些要 commit）：
 
 ```
@@ -31,9 +34,9 @@ curl -fsSL https://raw.githubusercontent.com/kid7st/ai-native-workflow/main/inst
 | `/pd` | 调研与业务信息 → 产品需求、产品设计、Meegle 工作项拆分与创建 |
 | `/bl` | 全部产品工作项 → 状态整理、相对优先级与迭代排期 |
 | `/s` | Meegle 工作项 → `SPEC.md`（可测验收 + 边界 + 影响面） |
-| `/p` | SPEC → `tasks/plan.md` + `tasks/todo.md`，**选型理由当场进 `docs/intent/`** |
+| `/p` | SPEC → 技术设计 + plan/todo，**选型理由当场进 `docs/intent/`** |
 | `/b` | 实现下一个任务：测试先行、逐任务提交、坑与债进 `docs/intent/` |
-| `/t` | 验收标准用例化、全量回归、Prove-It 修 bug |
+| `/t` | 验收标准用例化、全量回归、Prove-It 修 bug，并产出用例集和质量报告 |
 | `/rv` | 语义 review。开 MR 前自审，或 `/rv <MR>` 审别人的（findings 落成可 resolve 的 discussion） |
 | `/mr` | 开 MR：六段描述从仓库产物汇总，Why 无出处则报缺口不编 |
 | `/fb` | 拉全 MR 反馈（含行内），逐条判断、修或驳、回复后 resolve |
@@ -64,6 +67,9 @@ ai-native-workflow/
 ├── templates/
 │   ├── meegle-work-item.md          # 产品需求、设计、拆分与研测输入模板
 │   ├── merge-request.md             # MR 模板：What/Why/How/Scope/Tests/注意点
+│   ├── technical-design.md           # 技术设计方案模板
+│   ├── test-cases.md                 # 测试用例集模板
+│   ├── quality-report.html           # 人工评审友好的质量报告模板
 │   ├── mr-contract-check.sh         # MR 约定的机器检查（可本地跑）
 │   └── gitlab-ci-mr-contract.yml    # 上面那个检查的 CI job（/init 时询问是否加）
 └── package.json            # pi package manifest（可选：pi install git:...）

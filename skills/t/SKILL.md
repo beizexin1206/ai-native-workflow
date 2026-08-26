@@ -5,6 +5,30 @@ description: Turns acceptance criteria into executable tests, runs the full regr
 
 # /t —— 用例化、回归、修 bug
 
+## 评审产物
+
+测试过程要留下两份给人 review 的固定产物：
+
+- `testing/<工作项ID>/test-cases.md`：稳定的测试设计基线，包含需求追溯、验收/对抗/回归用例和测试数据
+- `testing/<工作项ID>/quality-report.html`：本轮执行快照，包含结果总览、覆盖缺口、缺陷、环境、风险与上线建议
+
+首次生成时分别使用 `docs/templates/test-cases.md` 和 `docs/templates/quality-report.html`。
+`test-cases.md` 随需求和影响面增量更新；`quality-report.html` 每轮测试完成后根据真实结果重新生成，
+历史版本由 Git 保留，不创建大量带日期的报告。
+
+工作项 ID 从 Meegle 工作项、SPEC 或当前分支名读取；多个来源不一致时停下来确认，不得猜测。
+任一项目模板不存在时停止并提示重新执行 `/init`，不得自行编造模板。
+
+质量报告只能汇总实际执行证据：没有运行的用例写 `NOT RUN`，环境阻塞写 `BLOCKED`，
+代码分析不能写成运行通过。报告不得包含密码、Token、Cookie、未脱敏账号或生产数据。
+
+计数口径固定为：`获得终态 = PASS + FAIL + BLOCKED`，
+`计划用例 = 获得终态 + NOT RUN`，`执行率 = 获得终态 ÷ 计划用例`。
+
+事实关系是单向的：`SPEC.md` 定义验收，`test-cases.md` 定义测试设计，测试代码、CI 和原始日志
+证明实际结果，缺陷系统维护缺陷状态，最后由这些事实生成 `quality-report.html`。不得从质量报告
+反向修改用例，也不得在用例集和质量报告中分别人工维护两套 PASS / FAIL 数字。
+
 ## 分层覆盖：逐层判断，涉及就补
 
 四层的定义、依赖处理和运行时机见项目 AGENTS.md 的「测试分层」。`/t` 的职责是
@@ -53,6 +77,13 @@ description: Turns acceptance criteria into executable tests, runs the full regr
 这份结论是 MR 「Tests」段的原料。**「测试通过」四个字不是结论**，
 没说清跑了什么、挂了什么、为什么可以放，等于没验。
 
+执行完成后根据本轮真实结果重新生成 `testing/<工作项ID>/quality-report.html`，用例只写 ID，不复制完整步骤；
+缺陷只引用 Meegle/缺陷系统编号和链接。上线建议必须能从 P0 结果、阻断缺陷、关键回归和
+残留风险直接推出。
+
+输出前自检：不得残留 `{{...}}` 占位符；工作项、commit、环境、执行时间不得为空；
+三条计数公式必须成立；每条 FAIL / BLOCKED 都必须关联用例 ID 和原始证据。
+
 ## 定位问题时
 
 先保留证据（日志、失败输出、复现步骤），再动手。
@@ -66,6 +97,8 @@ grep 一遍同一个函数的所有调用方，只修 ticket 说的那条路径�
 - 测试是照着实现写的（实现改了测试就挂，但行为没变）
 - 为了让测试变绿而改测试
 - 回归「跑过了」但说不出跑了多少条
+- 在用例集和质量报告里分别维护 PASS / FAIL，两个数字迟早不一致
+- 报告写了 PASS，但找不到对应测试、CI 或原始执行证据
 - 缺陷报告里没有可复现的最小步骤
 - 只有单测，改动明明动了接口/链路/用户流程却没补对应层
 - 前端改了但一条前端测试都没加
