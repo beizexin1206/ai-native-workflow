@@ -36,7 +36,7 @@ curl -fsSL https://raw.githubusercontent.com/kid7st/ai-native-workflow/main/inst
 | `/s` | Meegle 工作项 → `SPEC.md`（可测验收 + 边界 + 影响面） |
 | `/p` | SPEC → 技术设计 + plan/todo，**选型理由当场进 `docs/intent/`** |
 | `/b` | 实现下一个任务：测试先行、逐任务提交、坑与债进 `docs/intent/` |
-| `/t` | 验收标准用例化、全量回归、Prove-It 修 bug，并产出用例集和质量报告 |
+| `/t` | 验收标准用例化、全量回归、Prove-It 修 bug；可额外生成供人工查阅的质量报告 |
 | `/rv` | 语义 review。开 MR 前自审，或 `/rv <MR>` 审别人的（findings 落成可 resolve 的 discussion） |
 | `/mr` | 开 MR：六段描述从仓库产物汇总，Why 无出处则报缺口不编 |
 | `/fb` | 拉全 MR 反馈（含行内），逐条判断、修或驳、回复后 resolve |

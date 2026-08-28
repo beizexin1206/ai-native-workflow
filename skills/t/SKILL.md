@@ -5,19 +5,23 @@ description: Turns acceptance criteria into executable tests, runs the full regr
 
 # /t —— 用例化、回归、修 bug
 
-## 评审产物
+## 测试产物与附加报告
 
-测试过程要留下两份给人 review 的固定产物：
+测试过程保留测试设计基线，并可额外生成一份给人查阅的 HTML 报告：
 
 - `testing/<工作项ID>/test-cases.md`：稳定的测试设计基线，包含需求追溯、验收/对抗/回归用例和测试数据
-- `testing/<工作项ID>/quality-report.html`：本轮执行快照，包含结果总览、覆盖缺口、缺陷、环境、风险与上线建议
+- `testing/<工作项ID>/quality-report.html`：可选的本轮执行视图，包含结果总览、覆盖缺口、缺陷、环境、风险与上线建议，供人工额外查阅
 
-首次生成时分别使用 `docs/templates/test-cases.md` 和 `docs/templates/quality-report.html`。
-`test-cases.md` 随需求和影响面增量更新；`quality-report.html` 每轮测试完成后根据真实结果重新生成，
-历史版本由 Git 保留，不创建大量带日期的报告。
+首次创建 `test-cases.md` 时使用 `docs/templates/test-cases.md`；选择生成质量报告时使用
+`docs/templates/quality-report.html`。`test-cases.md` 随需求和影响面增量更新；若本轮生成报告，
+则根据真实结果覆盖更新 `quality-report.html`，历史版本由 Git 保留，不创建大量带日期的报告。
 
 工作项 ID 从 Meegle 工作项、SPEC 或当前分支名读取；多个来源不一致时停下来确认，不得猜测。
-任一项目模板不存在时停止并提示重新执行 `/init`，不得自行编造模板。
+`test-cases.md` 模板不存在时停止并提示重新执行 `/init`，不得自行编造模板。
+`quality-report.html` 模板不存在或生成失败时，只说明未生成的原因并继续主流程，不得阻塞测试、Review、MR 或合入判断。
+
+质量报告不是事实源、审批节点或质量门禁。测试结果、缺陷状态和流转结论始终由测试代码、CI、原始日志、
+缺陷系统及人工决定维护；报告只能读取并展示这些事实，缺失或损坏不能反向改变它们。
 
 质量报告只能汇总实际执行证据：没有运行的用例写 `NOT RUN`，环境阻塞写 `BLOCKED`，
 代码分析不能写成运行通过。报告不得包含密码、Token、Cookie、未脱敏账号或生产数据。
@@ -25,7 +29,7 @@ description: Turns acceptance criteria into executable tests, runs the full regr
 计数口径固定为：`获得终态 = PASS + FAIL + BLOCKED`，
 `计划用例 = 获得终态 + NOT RUN`，`执行率 = 获得终态 ÷ 计划用例`。
 
-人工 Review 需要看到决策信息，而不是文档体积。质量报告除总数外必须按 P0/P1/P2 展示执行分布，
+如果生成质量报告，人工 Review 需要看到决策信息，而不是文档体积。报告除总数外应按 P0/P1/P2 展示执行分布，
 列出登记缺陷数、验证方式降级或能力缺口、需求偏差与人工裁决、残留风险及责任期限。
 没有证据例外时明确写“无”，不得用空表或笼统的“测试通过”代替。
 
@@ -81,7 +85,7 @@ description: Turns acceptance criteria into executable tests, runs the full regr
 这份结论是 MR 「Tests」段的原料。**「测试通过」四个字不是结论**，
 没说清跑了什么、挂了什么、为什么可以放，等于没验。
 
-执行完成后根据本轮真实结果重新生成 `testing/<工作项ID>/quality-report.html`，用例只写 ID，不复制完整步骤；
+执行完成后，在模板存在且上下文足够时尝试生成 `testing/<工作项ID>/quality-report.html`，用例只写 ID，不复制完整步骤；
 缺陷不得复制完整缺陷档案，但必须保留缺陷系统编号和链接、关联用例、严重级别、对本次上线判断的
 影响及原始证据链接。复现步骤、根因和状态流转由缺陷系统维护。
 
@@ -89,8 +93,9 @@ description: Turns acceptance criteria into executable tests, runs the full regr
 涉及多仓、公开接口、schema、数据迁移或独立部署单元时，保留模板中的“联合发布评估”；
 普通改动删除该可选节，不生成大段“不适用”。
 
-输出前自检：不得残留 `{{...}}` 占位符；工作项、commit、环境、执行时间不得为空；
+报告交付前自检：不得残留 `{{...}}` 占位符；工作项、commit、环境、执行时间不得为空；
 三条计数公式必须成立；每条 FAIL / BLOCKED 都必须关联用例 ID 和原始证据。
+自检失败时不要交付一份看似完整的报告，说明缺口并继续主流程。
 
 ## 定位问题时
 

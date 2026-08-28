@@ -29,7 +29,7 @@ docs/design/<工作项ID>/
                    technical-design.md（/p 的伴随产物，方便人 review）
 docs/templates/   工作项、MR、技术设计、测试用例与质量报告模板
 testing/<工作项ID>/
-                   test-cases.md + quality-report.html（/t 产出）
+                   test-cases.md + 可选 quality-report.html（/t 生成，报告不参与门禁）
 <项目填>          源码根目录
 <项目填>          测试根目录，按测试分层分子目录
 ```
@@ -99,7 +99,7 @@ testing/<工作项ID>/
 |---|---|---|---|
 | 产品 | 产品需求与产品设计、工作项拆分、优先级与排期 | `/pd` → 创建 Meegle 工作项 → `/bl`，入选迭代后参与 `/s` | 产品定义、工作项及父子/依赖关系、优先级与迭代 |
 | 研发 | 技术设计、实现与上下文沉淀 | `/p` → `/b` → `/t` → `/rv` → `/mr` → `/fb` | 技术设计、plan/todo、代码+测试、六段 MR |
-| 测试 | 验收与回归口径 | `/t`，按工作项验收标准逐条验 | 测试用例集、HTML 质量报告、复现测试、回归结果 |
+| 测试 | 验收与回归口径 | `/t`，按工作项验收标准逐条验 | 测试用例集、复现测试、回归结果；可选 HTML 质量报告 |
 | 任何人 | review | `/rv <MR>` | MR 上逐条 resolve 的 discussion |
 
 这是**责任边界，不是权限边界**。产品和测试同样可以跑 `/b` 改代码、开 MR。
@@ -202,7 +202,7 @@ npm i -g @lark-project/meegle && meegle auth login   # 未装时
 | `/s` | 工作项 → `SPEC.md` |
 | `/p` | SPEC → 技术设计 + plan/todo，选型理由进 `docs/intent/` |
 | `/b` | 实现下一个任务：测试先行、逐任务提交、坑与债进 `docs/intent/` |
-| `/t` | 用例化 + 全量回归；按工作项产出测试用例集与质量报告 |
+| `/t` | 用例化 + 全量回归；按工作项维护测试用例集，可额外生成供人工查阅的质量报告 |
 | `/rv` | 五轴 review。开 MR 前自审，或 `/rv <MR号>` 审别人的 |
 | `/mr` | 汇总六段描述、自检、`glab mr create`（永不合并） |
 | `/fb` | 拉 MR 的 comment（含行内），逐条处理并 resolve |
