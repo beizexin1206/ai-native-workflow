@@ -62,16 +62,23 @@
             <tr><td>P2</td><td>{{N}}</td><td>{{N}}</td><td>{{N}}</td><td>{{N}}</td><td>{{N}}</td><td>{{风险与裁决}}</td></tr>
           </tbody>
         </table>
+      </section>
+
+      <section>
+        <h2>一、谁测了什么</h2>
+        <h3>1.1 AI 已完成的测试</h3>
+        <p class="notice">只写 AI 已实际执行并留有证据的测试；代码分析不能写成运行通过。</p>
         <table>
-          <thead><tr><th>核验维度</th><th>结论</th><th>证据与说明</th></tr></thead>
-          <tbody>
-            <tr><td>需求追溯</td><td class="{{pass/fail/warn}}">{{结论}}</td><td>{{需求与用例是否一一对应}}</td></tr>
-            <tr><td>测试执行</td><td class="{{pass/fail/warn}}">{{结论}}</td><td>{{执行范围、未执行项及原因}}</td></tr>
-            <tr><td>证据有效性</td><td class="{{pass/fail/warn}}">{{结论}}</td><td>{{验证方式与证据是否一致}}</td></tr>
-            <tr><td>关键风险</td><td class="{{pass/fail/warn}}">{{结论}}</td><td>{{TOP 风险是否闭环}}</td></tr>
-          </tbody>
+          <thead><tr><th>测试项</th><th>用例</th><th>AI 实际做了什么</th><th>结果</th><th>证据</th><th>未解决问题</th></tr></thead>
+          <tbody><tr><td>{{功能或场景}}</td><td>{{TC-ID}}</td><td>{{运行命令、操作路径或断言}}</td><td class="{{pass/fail/warn}}">{{PASS/FAIL/BLOCKED}}</td><td>{{CI、日志、截图或报告链接}}</td><td>{{无/缺陷或限制}}</td></tr></tbody>
         </table>
-        <h3>证据例外与验证降级</h3>
+        <h3>1.2 需要人完成的测试</h3>
+        <p class="notice">每一项都必须能直接照着执行；不能只写“有风险”或“需人工确认”。没有人工测试时写“无”。</p>
+        <table>
+          <thead><tr><th>测试项</th><th>为什么必须由人完成</th><th>人要怎么测</th><th>预期看到什么</th><th>负责人</th><th>状态</th></tr></thead>
+          <tbody><tr><td>{{功能或场景}}</td><td>{{登录、权限、感官判断、线下设备或外部系统限制}}</td><td>{{具体操作步骤}}</td><td>{{可观察的通过标准}}</td><td>{{姓名}}</td><td>{{未开始/进行中/通过/失败}}</td></tr></tbody>
+        </table>
+        <h3>1.3 证据例外与验证降级</h3>
         <p class="notice">只列与原计划不一致的验证、能力缺口或经人工批准的替代证据；没有例外时写“无”。</p>
         <table>
           <thead><tr><th>用例/范围</th><th>原验证方式</th><th>实际验证方式</th><th>证据等级</th><th>人工裁决/依据</th><th>影响</th></tr></thead>
@@ -80,29 +87,17 @@
       </section>
 
       <section>
-        <h2>一、需求一致性</h2>
-        <h3>1.1 需求覆盖</h3>
+        <h2>二、需求一致性</h2>
+        <h3>2.1 需求覆盖</h3>
         <table>
           <thead><tr><th>需求/验收标准</th><th>对应用例</th><th>结果</th><th>说明</th></tr></thead>
           <tbody><tr><td>{{SPEC 条目}}</td><td>{{TC-ID}}</td><td class="{{pass/fail/warn}}">{{结果}}</td><td>{{证据或偏差}}</td></tr></tbody>
         </table>
-        <h3>1.2 实现偏差与遗漏</h3>
+        <h3>2.2 实现偏差与遗漏</h3>
         <table>
           <thead><tr><th>类型</th><th>需求</th><th>实际</th><th>影响</th><th>人工裁决/依据</th><th>后续动作</th><th>负责人/期限</th></tr></thead>
           <tbody><tr><td>{{偏差/遗漏}}</td><td>{{预期}}</td><td>{{实际}}</td><td>{{影响}}</td><td>{{裁决、裁决人和出处}}</td><td>{{回写需求/缺陷/待办}}</td><td>{{姓名/YYYY-MM-DD}}</td></tr></tbody>
         </table>
-      </section>
-
-      <section>
-        <h2>二、测试覆盖度</h2>
-        <table>
-          <thead><tr><th>模块/层级</th><th>已覆盖</th><th>未覆盖</th><th>原因与风险</th></tr></thead>
-          <tbody>
-            <tr><td>{{模块或单元/接口/集成/E2E}}</td><td>{{场景}}</td><td>{{场景}}</td><td>{{原因、负责人、补测时间}}</td></tr>
-          </tbody>
-        </table>
-        <h3>需人工介入</h3>
-        <p>{{人工验证、登录、权限、外部依赖或裁决事项；没有写“无”}}</p>
       </section>
 
       <section>
@@ -129,23 +124,16 @@
       </section>
 
       <section>
-        <h2>五、风险与上线建议</h2>
+        <h2>五、需要处理的事项与最终建议</h2>
+        <h3>发布前需要完成</h3>
         <table>
-          <thead><tr><th>上线条件</th><th>状态</th><th>依据</th></tr></thead>
-          <tbody>
-            <tr><td>P0 用例全部通过</td><td class="{{pass/fail}}">{{满足/不满足}}</td><td>{{证据}}</td></tr>
-            <tr><td>P1 失败已裁决</td><td class="{{pass/fail}}">{{满足/不满足}}</td><td>{{证据与裁决}}</td></tr>
-            <tr><td>P2 未执行符合项目阈值</td><td class="{{pass/fail}}">{{满足/不满足}}</td><td>{{阈值、实际值和依据}}</td></tr>
-            <tr><td>阻断缺陷清零</td><td class="{{pass/fail}}">{{满足/不满足}}</td><td>{{证据}}</td></tr>
-            <tr><td>关键回归通过</td><td class="{{pass/fail}}">{{满足/不满足}}</td><td>{{证据}}</td></tr>
-            <tr><td>验证方式降级已批准</td><td class="{{pass/fail}}">{{满足/不满足}}</td><td>{{例外清单与批准依据}}</td></tr>
-            <tr><td>残留风险有负责人和处置时间</td><td class="{{pass/fail}}">{{满足/不满足}}</td><td>{{证据}}</td></tr>
-          </tbody>
+          <thead><tr><th>事项</th><th>来源</th><th>具体动作</th><th>完成标准</th><th>负责人</th><th>状态</th></tr></thead>
+          <tbody><tr><td>{{修复/人工测试/补证据/确认}}</td><td>{{TC-ID、BUG-ID 或需求}}</td><td>{{下一步具体做什么}}</td><td>{{做到什么算完成}}</td><td>{{姓名}}</td><td>{{未开始/进行中/已完成}}</td></tr></tbody>
         </table>
-        <h3>残留风险</h3>
+        <h3>仍未解决的问题</h3>
         <table>
-          <thead><tr><th>风险</th><th>级别</th><th>影响</th><th>证据强度</th><th>闭环状态</th><th>负责人</th><th>期限</th></tr></thead>
-          <tbody><tr><td>{{风险}}</td><td>{{高/中/低}}</td><td>{{用户、数据、链路或发布影响}}</td><td>{{直接/间接/静态及链接}}</td><td>{{已闭环/接受/待处理}}</td><td>{{姓名}}</td><td>{{日期}}</td></tr></tbody>
+          <thead><tr><th>问题</th><th>会造成什么具体影响</th><th>当前怎么处理</th><th>负责人</th><th>截止时间</th></tr></thead>
+          <tbody><tr><td>{{未解决的问题}}</td><td>{{用户会遇到什么、数据或流程会怎样}}</td><td>{{修复/接受/规避}}</td><td>{{姓名}}</td><td>{{日期}}</td></tr></tbody>
         </table>
         <h3>最终建议</h3>
         <p><strong>{{允许上线 / 有条件上线 / 阻塞上线}}</strong>：{{一句话依据和必须完成的条件}}。本段仅展示已有测试结论，不产生新的批准或阻塞。</p>
@@ -164,13 +152,6 @@
         </table>
       </section>
 
-      <section>
-        <h2>人类待办</h2>
-        <table>
-          <thead><tr><th>#</th><th>事项</th><th>负责人</th><th>截止时间</th><th>状态</th></tr></thead>
-          <tbody><tr><td>1</td><td>{{待决策/修复/补测事项}}</td><td>{{姓名}}</td><td>{{日期}}</td><td>{{状态}}</td></tr></tbody>
-        </table>
-      </section>
     </main>
   </body>
 </html>
