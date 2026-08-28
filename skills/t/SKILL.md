@@ -7,14 +7,14 @@ description: Turns acceptance criteria into executable tests, runs the full regr
 
 ## 测试产物与附加报告
 
-测试过程保留测试设计基线，并可额外生成一份给人查阅的 HTML 报告：
+测试过程保留测试设计基线，并默认额外生成一份给人查阅的 HTML 报告：
 
 - `testing/<工作项ID>/test-cases.md`：稳定的测试设计基线，包含需求追溯、验收/对抗/回归用例和测试数据
-- `testing/<工作项ID>/quality-report.html`：可选的本轮执行视图，包含结果总览、覆盖缺口、缺陷、环境、风险与上线建议，供人工额外查阅
+- `testing/<工作项ID>/quality-report.html`：默认生成的本轮执行视图，包含结果总览、覆盖缺口、缺陷、环境、风险与上线建议，供人工额外查阅
 
-首次创建 `test-cases.md` 时使用 `docs/templates/test-cases.md`；选择生成质量报告时使用
-`docs/templates/quality-report.html`。`test-cases.md` 随需求和影响面增量更新；若本轮生成报告，
-则根据真实结果覆盖更新 `quality-report.html`，历史版本由 Git 保留，不创建大量带日期的报告。
+首次创建 `test-cases.md` 时使用 `docs/templates/test-cases.md`；生成质量报告时使用
+`docs/templates/quality-report.html`。`test-cases.md` 随需求和影响面增量更新；每轮测试完成后根据
+真实结果覆盖更新 `quality-report.html`，历史版本由 Git 保留，不创建大量带日期的报告。
 
 工作项 ID 从 Meegle 工作项、SPEC 或当前分支名读取；多个来源不一致时停下来确认，不得猜测。
 `test-cases.md` 模板不存在时停止并提示重新执行 `/init`，不得自行编造模板。
@@ -29,7 +29,7 @@ description: Turns acceptance criteria into executable tests, runs the full regr
 计数口径固定为：`获得终态 = PASS + FAIL + BLOCKED`，
 `计划用例 = 获得终态 + NOT RUN`，`执行率 = 获得终态 ÷ 计划用例`。
 
-如果生成质量报告，人工 Review 需要看到决策信息，而不是文档体积。报告除总数外应按 P0/P1/P2 展示执行分布，
+生成质量报告时，人工 Review 需要看到决策信息，而不是文档体积。报告除总数外应按 P0/P1/P2 展示执行分布，
 列出登记缺陷数、验证方式降级或能力缺口、需求偏差与人工裁决、残留风险及责任期限。
 没有证据例外时明确写“无”，不得用空表或笼统的“测试通过”代替。
 
@@ -85,7 +85,8 @@ description: Turns acceptance criteria into executable tests, runs the full regr
 这份结论是 MR 「Tests」段的原料。**「测试通过」四个字不是结论**，
 没说清跑了什么、挂了什么、为什么可以放，等于没验。
 
-执行完成后，在模板存在且上下文足够时尝试生成 `testing/<工作项ID>/quality-report.html`，用例只写 ID，不复制完整步骤；
+每轮测试执行完成后都要尝试生成 `testing/<工作项ID>/quality-report.html`，这是默认动作，不需要额外选择；
+用例只写 ID，不复制完整步骤；
 缺陷不得复制完整缺陷档案，但必须保留缺陷系统编号和链接、关联用例、严重级别、对本次上线判断的
 影响及原始证据链接。复现步骤、根因和状态流转由缺陷系统维护。
 
