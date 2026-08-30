@@ -11,6 +11,9 @@ description: Opens the merge request for the current branch, assembling the six-
 
 - `/rv local` 跑过且已处理完 findings
 - `AGENTS.md`「合并前本地验证」表里的三条命令本地全绿 —— 没跑就先跑
+- 产品行为或边界发生变化时，`SPEC.md` 能追溯到已确认的本次产品设计和公共产品上下文；MR 模板中的
+  两项引用均可访问，且实现没有静默改变产品流程、规则、状态、异常或非目标。纯技术或文档改动可以声明
+  门禁不适用，但必须写具体原因，不能用“不涉及”代替判断。
 - 工作区干净，已 `git fetch origin && git pull --rebase origin <主干>`
 - 分支名带工作项号（`feat/PROJ-1234-order-state`）；不带 → 先 `git branch -m`
 
@@ -36,6 +39,8 @@ git log --oneline "$BASE"..HEAD; git diff --stat "$BASE"..HEAD
 
 用仓库里的 `docs/templates/merge-request.md` 六段：What / Why / How / Scope / Tests / 注意点。
 写进临时文件（`/tmp/mr-body.md`），**不要**把描述塞进命令行字符串。
+What 段填写产品设计门禁。适用时同时填写产品设计锚点和公共产品上下文路径/链接；缺失时不是补一行
+文字，而是返回上游补齐门禁证据。不适用时说明为什么本次没有改变任何用户行为或产品边界。
 
 ## Step 3 · 自检
 
@@ -79,4 +84,5 @@ CI 绿了就报「ready to merge」并停 —— 合并是人的显式决定。
 - 六段里有一段是 `TBD` / `待补` 就推上去
 - 本地没跑验证，指望 CI 告诉你能不能过（同一分支第三次 push「看看线上行不行」= 停）
 - 一个分支开了两个 MR，或一个 MR 塞了两个工作项
+- MR 找不到本次产品设计或公共产品上下文引用，却用通用产品文档、聊天记录或技术设计代替
 - 开完顺手 `glab mr merge`

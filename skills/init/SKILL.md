@@ -34,7 +34,8 @@ docs/templates/quality-report.html          ← 源目录 templates/quality-repo
 .gitlab/merge_request_templates/default.md  ← 同 merge-request.md（GitLab 开 MR 时自动带出）
 ```
 
-已存在的文件**不覆盖**，报告「已存在，跳过」，让用户自己决定要不要合并。
+已存在的文件**不覆盖**；与发行模板相同则报告「已是最新」，内容不同则报告「已存在且与当前模板不同」，
+列出受影响模板并让用户决定是否合并更新。不得只说“跳过”而让项目误以为已经获得最新阶段门禁。
 
 ### 3. 建 `docs/intent/`
 
@@ -47,7 +48,7 @@ docs/templates/quality-report.html          ← 源目录 templates/quality-repo
 
 注入的块里有四处需要项目自己填，**列出来提醒用户**，不要替他猜：
 
-- 「本项目的事实来源」第 5 条起 —— 架构文档 / 设计系统 / ADR 在哪
+- 「本项目的事实来源」第 2、6 条 —— 公共产品上下文、架构文档 / 设计系统 / ADR 在哪
 - 「项目结构」的源码根目录与测试根目录
 - 「合并前本地验证」表 —— 真实的 lint / typecheck / 单元+接口 / 集成命令
 - 已知的坑 —— 老项目通常一抓一大把，先记三条最疼的
@@ -57,6 +58,8 @@ docs/templates/quality-report.html          ← 源目录 templates/quality-repo
 
 同时核对「共同上下文文档」五份（核心业务流程、技术架构、API 与调用链、系统约束、外部依赖）
 在 `docs/` 下有没有，**只报缺口，不建空文件** —— 空壳文档比没有更坏，它让人以为已经有了。
+另外核对项目是否声明公共产品上下文；已有则把准确路径补进事实来源，尚无则报告“首次 `/pd` 需要建立并
+由产品经理确认”，不得把技术架构或 README 冒充产品上下文。
 
 ### 4. 项目专属 skill 的位置
 

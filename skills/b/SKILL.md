@@ -9,6 +9,8 @@ description: Implements the next pending task test-first, one slice at a time, c
 
 - `SPEC.md` 必须存在（没有 → 让用户先跑 `/s`，不要臆造需求）
 - `tasks/todo.md` 必须存在（没有 → 先跑 `/p`）
+- `SPEC.md` 必须能追溯到已确认的本次产品设计和公共产品上下文，技术设计必须已经完成上游一致性检查。
+  缺少任一项或发现冲突 → 停止并返回 `/pd`、`/s` 或 `/p`，不得边写代码边补产品方案。
 - 工作区干净：除规划产物外有未提交改动就停下来问。逐任务提交会把无关改动裹进去，
   破坏干净回滚。
 - 已与主干同步：`git fetch origin && git pull --rebase origin <主干>`
@@ -33,6 +35,8 @@ description: Implements the next pending task test-first, one slice at a time, c
 - **本地验证，不要推上去试。** 能本地跑的必须本地跑通再提交；
   把 CI / 部署当迭代循环，一轮 10 分钟换本地 1 秒。
 - **不越界。** SPEC 的「非目标」是硬边界，想加就先回去改 SPEC。
+- **不跳产品门禁。** 用户说“直接改”“继续推进”只授权推进已完成上游设计的范围，不代表可以跳过
+  产品设计、公共产品上下文检查或技术设计。
 - 遇到下面情况**停下来问**，不要硬闯：
   - 测试改不通或构建坏了且没有明显修法 → 用 `/ct` 或直接问
   - SPEC 有歧义，或任务需要 SPEC 没覆盖的决策
@@ -50,3 +54,5 @@ description: Implements the next pending task test-first, one slice at a time, c
 - `docs/intent/` 这一轮一个字没加，但你至少绕过了两个坑
 - 测试是后补的（先写实现再补测试 = 测试在描述实现，不是描述行为）
 - 顺手改了任务范围之外的文件
+- 只有一份通用产品文档，没有针对本次问题的已确认产品设计，就开始写代码
+- 实现过程中发现产品流程、状态或异常场景没定义，却直接在代码中替产品做决定

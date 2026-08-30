@@ -41,7 +41,24 @@ for sec in What Why How Scope Tests 注意点; do
   fi
 done
 
-# 3. Why 段引用的出处文件必须真实存在
+# 3. 产品设计与公共产品上下文必须可追溯。这里只检查声明存在且不是占位符；
+# 内容是否一致由 /pd、/s、/p、/b 和 review 分阶段判断。
+product_trace=$(printf '%s\n' "$BODY" | grep -E '^产品设计门禁:[[:space:]]*' | head -n 1)
+if [ -z "$product_trace" ]; then
+  err "MR 没有声明产品设计门禁"
+elif printf '%s' "$product_trace" | grep -qE '<[^>]+>|TBD|待补|N/A'; then
+  err "产品设计门禁仍是占位符"
+elif printf '%s' "$product_trace" | grep -qE '^产品设计门禁:[[:space:]]*不适用[[:space:]]*[—-][[:space:]]*.+'; then
+  ok "产品设计门禁已声明不适用及原因"
+else
+  if printf '%s' "$product_trace" | grep -q '产品设计:' && printf '%s' "$product_trace" | grep -q '公共产品上下文:'; then
+    ok "产品设计与公共产品上下文已声明"
+  else
+    err "适用产品设计门禁时必须同时声明产品设计和公共产品上下文"
+  fi
+fi
+
+# 4. Why 段引用的出处文件必须真实存在
 why=$(section Why)
 if [ -n "$why" ]; then
   paths=$(printf '%s\n' "$why" | grep -oE '(docs/intent/[A-Za-z0-9._/-]+\.md|tasks/plan\.md)' | sort -u)

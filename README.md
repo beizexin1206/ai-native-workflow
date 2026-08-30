@@ -16,8 +16,9 @@ curl -fsSL https://raw.githubusercontent.com/kid7st/ai-native-workflow/main/inst
 克隆到 `~/.ai-native-workflow`，软链到 `~/.agents/skills`（Codex + pi）、`~/.claude/skills`、`~/.qoder/skills`。
 升级：`cd ~/.ai-native-workflow && git pull`，软链自动跟上。
 
-升级后如果仓库新增了模板，已有项目需要重新执行一次 `/init`。`/init` 只补充缺失模板，
-不会覆盖项目中已经存在的模板。
+升级后如果仓库新增了模板或公共策略，已有项目需要重新执行一次 `/init`。`/init` 会升级
+`AGENTS.md` 的托管标记块，只补充缺失模板，不会覆盖项目中已经存在的模板；已存在但落后的模板会报告，
+由项目决定是否合并更新。
 
 **步骤 2 · 每个仓库一次** —— 装约定（这些要 commit）：
 
@@ -31,7 +32,7 @@ curl -fsSL https://raw.githubusercontent.com/kid7st/ai-native-workflow/main/inst
 
 | 命令 | 干什么 |
 |---|---|
-| `/pd` | 调研与业务信息 → 产品需求、产品设计、Meegle 工作项拆分与创建 |
+| `/pd` | 公共产品上下文 + 调研与业务信息 → 产品需求、产品设计、Meegle 工作项拆分与创建 |
 | `/bl` | 全部产品工作项 → 状态整理、相对优先级与迭代排期 |
 | `/s` | Meegle 工作项 → `SPEC.md`（可测验收 + 边界 + 影响面） |
 | `/p` | SPEC → 技术设计 + plan/todo，**选型理由当场进 `docs/intent/`** |
@@ -53,6 +54,10 @@ curl -fsSL https://raw.githubusercontent.com/kid7st/ai-native-workflow/main/inst
   Codex 与 pi 共读 `.agents/skills`，Qoder 读 `.qoder/skills` —— 用软链，不复制。
 - **产品 Agent 只有两个能力。** `/pd` 定义产品需求、产品设计并拆分工作项；`/bl` 在全部工作项中
   统一优先级和排期。产品经理确认后才写入 Meegle，产品验收不在本阶段范围。
+- **产品设计是硬门禁。** `/pd` 先读取项目声明的公共产品上下文并处理冲突，再形成当前增量产品设计；
+  `/s`、`/p`、`/b` 和 `/mr` 各自验证上游引用。公共产品上下文不能代替本次产品设计，产品设计也不能
+  绕过公共产品上下文。产品行为改动缺少任一项就返回上游，不进入技术设计或实现；纯技术或文档改动
+  必须明确说明门禁不适用的原因，不能伪造产品产物。
 - **Why 必须当场记。** What/How/Scope/Tests 都能从仓库产物汇总，
   只有「为什么选这个方案」事后无法重建 —— 所以它在 `/p` `/b` 阶段就落进 `docs/intent/`，
   `/rv` 和 MR 模板只做汇总与校验。
