@@ -5,6 +5,9 @@ description: Turns acceptance criteria into executable tests, runs the full regr
 
 # /t —— 用例化、回归、修 bug
 
+`/t` 不是只证明“这一次没有问题”，而是把本次验收转化为以后可以重复执行的质量能力。
+完成标准不仅是得到测试结果，还包括让验证逻辑可发现、可维护、可再次运行。
+
 ## 测试产物与附加报告
 
 测试过程保留测试设计基线，并默认额外生成一份给人查阅的 HTML 报告。具体子目录沿用项目既有约定：
