@@ -48,6 +48,8 @@ curl -fsSL https://raw.githubusercontent.com/kid7st/ai-native-workflow/main/inst
   `AGENTS.md` 和模板必须随仓库走、被 review、被版本固定。
 - **一份 `SKILL.md` 服务四个工具。** Claude Code 的 commands 已并入 skills，
   Codex 与 pi 共读 `.agents/skills`，Qoder 读 `.qoder/skills` —— 用软链，不复制。
+- **项目模板是适配器，不是公共流程。** 项目可在 `docs/templates/` 下自带子目录；对应阶段会自动生成
+  派生评审视图，没有项目模板的仓库不增加任何产物或门禁。
 - **产品 Agent 只有两个能力。** `/pd` 定义产品需求、产品设计并拆分工作项；`/bl` 在全部工作项中
   统一优先级和排期。产品经理确认后才写入 Meegle，产品验收不在本阶段范围。
 - **Why 必须当场记。** What/How/Scope/Tests 都能从仓库产物汇总，
