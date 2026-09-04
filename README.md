@@ -31,6 +31,7 @@ curl -fsSL https://raw.githubusercontent.com/kid7st/ai-native-workflow/main/inst
 
 | 命令 | 干什么 |
 |---|---|
+| `/start` | 用自然语言交代一个需求；AI 自动调度完整流程，只在业务、方案、风险和交付关口找人确认 |
 | `/pd` | 调研与业务信息 → 产品需求、产品设计、Meegle 工作项拆分与创建 |
 | `/bl` | 全部产品工作项 → 状态整理、相对优先级与迭代排期 |
 | `/s` | Meegle 工作项 → `SPEC.md`（可测验收 + 边界 + 影响面） |
@@ -63,7 +64,7 @@ curl -fsSL https://raw.githubusercontent.com/kid7st/ai-native-workflow/main/inst
 ai-native-workflow/
 ├── install.sh              # 步骤 1
 ├── AGENTS.block.md         # 注入项目 AGENTS.md 的内容
-├── skills/                 # 13 个 skill，四个工具通用
+├── skills/                 # 14 个 skill，四个工具通用
 ├── templates/
 │   ├── meegle-work-item.md          # 产品需求、设计、拆分与研测输入模板
 │   ├── merge-request.md             # MR 模板：What/Why/How/Scope/Tests/注意点
