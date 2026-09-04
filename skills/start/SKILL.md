@@ -1,9 +1,9 @@
 ---
 name: start
-description: Drives one product-and-engineering request from a plain-language problem to a review-ready merge request by coordinating the AI Native Workflow and pausing only for human decisions, risk, or missing authority. Use when the user says /start, wants Qoder to take a real requirement through the whole workflow, or does not know which workflow command to run next.
+description: Drives one product-and-engineering request from a plain-language problem to a review-ready merge request by coordinating the AI Native Workflow and pausing only for human decisions, risk, or missing authority. Use when the user says /start, wants an agent to take a real requirement through the whole workflow, or does not know which workflow command to run next.
 ---
 
-# /start —— 把一个需求交给 Qoder
+# /start —— 开始并推进一个需求
 
 用户只需要说业务问题，不负责记流程、判断下一条命令或在工具之间搬运上下文。
 你负责识别当前位置、调用相应能力、保留证据，并明确区分：可以自主推进的工作、必须由人决定的事。
