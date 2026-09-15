@@ -57,7 +57,8 @@ docs/templates/   工作项与 MR 模板
 `feat/PROJ-1234-order-state` / `feat(order): 对账逻辑 [PROJ-1234]`。
 分支前缀：`feat/` `fix/` `refactor/` `docs/` `chore/` `ci/`。
 
-**开工前先同步**：`git fetch origin && git pull --rebase origin main`。
+**开工前先核对远端状态**：执行 `git fetch origin`，确认项目规定的开发基线与当前分支关系。
+需要同步已有需求分支时，先报告差异与方案，等待明确授权，不自动改变基线。
 
 **本地优先。** 能在本地验证的**必须**在本地验证完再开 MR。本地一轮 1 秒，
 推上去等 CI + 部署一轮 10 分钟 —— 用流水线当迭代循环，是把决策节奏拖慢 100 倍。
@@ -116,6 +117,16 @@ docs/templates/   工作项与 MR 模板
 npm i -g @lark-project/meegle && meegle auth login   # 未装时
 ```
 
+### Git 操作边界
+
+- 未经用户明确授权，不得执行 rebase（包括 `pull --rebase`）、强制推送
+  （包括 `--force-with-lease`），或使用平台上的 Rebase 功能。
+- MR 目标分支不等于需求分支的开发基线。不得为解决 MR 冲突或满足“分支需更新”的提示，
+  自行将目标分支（如 `beta`）merge 或 rebase 到需求分支。
+- 发现合并冲突时立即暂停，不自行解决、提交或推送。报告当前分支、目标分支、冲突文件及建议，
+  等待人工处理或针对该操作的明确授权；无法读取冲突文件时如实说明，不为获取列表而试做合并。
+- 开发、开 MR、处理评审意见的授权，不包含上述操作的授权。
+
 ### GitLab 约定
 
 - 评审叫 **MR**，用 `glab`，开 MR 走 `/mr`。描述按 `docs/templates/merge-request.md` 六段写：
@@ -129,7 +140,8 @@ npm i -g @lark-project/meegle && meegle auth login   # 未装时
 - **agent 永不合并 MR。** CI 绿了就报告「ready to merge」并停下 —— 合并是人的显式决定，
   本会话代开的 MR 也一样。review / 评论 / 处理 comment 都可以做。
 - 合并方式 squash，一个 MR 一个 commit。MR 标题和描述会成为 commit message，值得花时间写。
-- MR 存活 ≤ 3 天；更久就 rebase 到最新主干，并在描述里说明「是否与进行中的 MR 冲突」。
+- MR 存活 ≤ 3 天；更久就重新核对远端状态，在描述里说明「是否与进行中的 MR 冲突」。
+  如需同步分支，按「Git 操作边界」报告方案并等待明确授权，不自动 rebase。
 - 合并后清理，别让本地攒一堆死分支：
 
   ```bash

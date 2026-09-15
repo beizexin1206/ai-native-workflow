@@ -5,6 +5,15 @@ description: Pulls every unresolved thread on a merge request, judges each one, 
 
 # /fb —— 处理 MR 上的反馈
 
+## Git 操作边界
+
+- 修改评审意见的授权，不包含改变分支基线、解决合并冲突或强制推送的授权。
+- 未经用户针对该操作的明确授权，不得执行 rebase（包括 `pull --rebase`）、平台 Rebase、
+  强制推送（包括 `--force-with-lease`），或为消除冲突将目标分支 merge 到需求分支。
+- 发现合并冲突或平台提示需要 rebase / 更新分支时，暂停相关修改、提交和推送，
+  报告当前分支、目标分支、已知冲突文件及建议，等待人工处理或明确授权。
+  无法读取冲突文件时如实说明，不试做合并；同时遵守项目 `AGENTS.md` 的 Git 操作边界。
+
 ## 先把 comment 拿全
 
 MR 上的反馈分散在三处，**只看一处会漏**：

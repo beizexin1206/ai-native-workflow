@@ -11,7 +11,10 @@ description: Implements the next pending task test-first, one slice at a time, c
 - `tasks/todo.md` 必须存在（没有 → 先跑 `/p`）
 - 工作区干净：除规划产物外有未提交改动就停下来问。逐任务提交会把无关改动裹进去，
   破坏干净回滚。
-- 已与主干同步：`git fetch origin && git pull --rebase origin <主干>`
+- 已执行 `git fetch origin`，核对项目规定的开发基线与当前分支关系。
+  需要同步已有需求分支时，先报告差异与方案，等待明确授权；不得自行 rebase（包括
+  `pull --rebase`）、强推（包括 `--force-with-lease`），或将 MR 目标分支合回需求分支。
+  发现合并冲突立即暂停，不自行解决、提交或推送，等待人工处理或针对该操作的明确授权。
 
 ## 循环（一次一个任务）
 

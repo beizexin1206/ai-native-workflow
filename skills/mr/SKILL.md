@@ -11,8 +11,18 @@ description: Opens the merge request for the current branch, assembling the six-
 
 - `/rv local` 跑过且已处理完 findings
 - `AGENTS.md`「合并前本地验证」表里的三条命令本地全绿 —— 没跑就先跑
-- 工作区干净，已 `git fetch origin && git pull --rebase origin <主干>`
+- 工作区干净，已执行 `git fetch origin`，核对项目规定的开发基线、当前分支与 MR 目标分支。
+  MR 目标分支不等于开发基线；需要同步分支时先报告差异与方案，等待明确授权。
 - 分支名带工作项号（`feat/PROJ-1234-order-state`）；不带 → 先 `git branch -m`
+
+## Git 操作边界
+
+- MR 有冲突或平台提示需要 rebase / 更新分支时，只报告阻塞原因与已知冲突文件，
+  不自动同步目标分支，不自动修复冲突；无法读取冲突文件时如实说明，不试做合并。
+- 未经用户针对该操作的明确授权，不得执行 rebase（包括 `pull --rebase`）、平台 Rebase、
+  强制推送（包括 `--force-with-lease`），或把 MR 目标分支 merge 到需求分支。
+- 遇到合并冲突立即暂停，不继续解决、提交或推送，等待人工处理或明确授权。
+  创建 MR 的授权不包含这些操作；同时遵守项目 `AGENTS.md` 的 Git 操作边界。
 
 ## Step 1 · 从仓库产物汇总，不要从 diff 编
 
