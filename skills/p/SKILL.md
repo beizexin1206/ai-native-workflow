@@ -1,66 +1,26 @@
 ---
 name: p
-description: Breaks a SPEC into small verifiable tasks and records the rationale for every design choice at the moment it is made. Use when a spec exists and work needs slicing, when the user says /p, or when asked to plan, break down or sequence a change.
+description: Plan an approved requirement as verifiable implementation tasks and record actual design tradeoffs. Use for /p or technical planning; follow project artifacts and approval rules.
 ---
 
-# /p —— SPEC → 计划 + 任务 + 选型理由
+# /p —— 需求 → 计划、任务与选型理由
 
 ## 输入
 
-`SPEC.md`（没有就先跑 `/s`，不要替用户臆造需求）+ 相关代码 + `docs/intent/`。
-
-**先进只读模式**：读代码、理清组件依赖，再动笔。
+已明确的需求或规格、相关代码、项目规则与既有设计理由。先读代码和依赖，不凭空规划；不要求特定规格文件名。
 
 ## 产出
 
-三样东西，缺一不可：
+复用项目已有方案或计划载体，说明：
 
-### 1. `tasks/plan.md` —— 怎么做
+1. **怎么做**：修改哪些模块、为什么、相关接口和数据边界，以及验收方法。
+2. **做什么**：按完整可验证路径拆任务，不按「全部 model / 全部 controller」横向分层堆待办；必要的顺序依赖和检查点写清。
+3. **为什么这么选**：真实存在多个可行方案时，在决策时记录选择、理由与取舍，不事后从代码编造，也不虚构候选。
 
-按阶段组织，每阶段写清改哪些模块、验收标准、验证方式。
-
-### 2. `tasks/todo.md` —— 做什么
-
-checklist，**纵向切分**：一个任务 = 一条完整路径（能独立验证、能独立提交），
-不是「先写完所有 model 再写所有 controller」。
-
-每个任务小到能在一次专注会话里完成实现 + 测试 + 验证。
-
-```markdown
-- [ ] Task 1: <一句话> — 验收：<怎么算完成>
-```
-
-### 3. `docs/intent/<主题>.md` —— 为什么这么选 ★
-
-**只要某一步存在两个以上可行方案，就当场记下来：**
-
-```markdown
-## <决策点>
-- 候选：A / B / C
-- 选择：B
-- 理由：<为什么>
-- 否决 A 的原因：<为什么不>
-- 否决 C 的原因：<为什么不>
-```
-
-**必须在决策当时写。** 只存在于本次会话里的理由，会话一结束就没了；
-事后从代码里读不回来，从 diff 里更推不出来。这是后面 MR 的 Why 段唯一的原料来源。
+三类信息可以在同一载体中表达，不强制分成多个文件或放入固定目录。任务、负责人、提交及审查请求的对应关系按项目约定安排。
 
 ## 规则
 
-1. **规划期间不写代码。**
-2. 阶段之间插检查点：跑到这里应该能验证什么。
-3. 一个任务 = 一个人 = 一个 commit。多人并行时在 todo 里标认领人。
-4. 计划要给人确认后再进 `/b`。**生成计划的人不批准计划。**
+规划期间不实现代码。范围不超出批准需求，任务必须能验证。审批按项目与用户约定；生成方案不等于批准方案，已有明确批准不重复索取。
 
-## 何时进下一步
-
-`tasks/todo.md` 每条都可独立验证，`docs/intent/` 里记下了这一轮所有的多选一。
-然后跑 `/b`。
-
-## Red Flags
-
-- `docs/intent/` 是空的，但你在计划里做了 3 个技术选型
-- 任务是横向分层（「实现所有 API」），验证不了单条
-- 任务大到一次会话做不完
-- 计划里出现 SPEC 没要求的功能
+需求与方案具备可执行条件且获所需授权后进入 `/b`。

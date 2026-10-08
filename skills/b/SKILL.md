@@ -1,52 +1,29 @@
 ---
 name: b
-description: Implements the next pending task test-first, one slice at a time, committing each task separately and recording traps and debt as it goes. Use when a plan exists and implementation should start or continue, when the user says /b, or when asked to build, implement or code a task.
+description: Implement authorized work test-first against its approved behavior and plan. Use for /b or implementation; preserve unrelated changes and follow project commit and validation rules.
 ---
 
-# /b —— 实现下一个任务
+# /b —— 按批准方案实施
 
 ## 前置
 
-- `SPEC.md` 必须存在（没有 → 让用户先跑 `/s`，不要臆造需求）
-- `tasks/todo.md` 必须存在（没有 → 先跑 `/p`）
-- 工作区干净：除规划产物外有未提交改动就停下来问。逐任务提交会把无关改动裹进去，
-  破坏干净回滚。
-- 已与主干同步：`git fetch origin && git pull --rebase origin <主干>`
+读取已批准需求与方案、项目规则、相关代码和验收条件。载体可为对话、项目文档或工作项，不要求固定文件名或任务编号。
 
-## 循环（一次一个任务）
+核对工作区、实际开发基线及改动归属；已有未提交内容不自动丢弃或夹带。同步、分支与提交方式按项目规则和用户授权执行，不自动 rebase 或重命名分支。
 
-1. 读任务的验收标准，读相关代码、现有模式、类型
-2. **写失败的测试**（RED）—— 描述期望行为
-3. 写最小实现让它通过（GREEN）
-4. 跑全量测试查回归
-5. 跑构建
-6. **记录 diff 显示不出来的东西** → `docs/intent/<主题>.md`：
-   - 踩到的坑（为什么这里不能直接那样写）
-   - 中途放弃的做法及原因
-   - 明知留下的技术债和它的上限
-7. 提交：只 stage 这个任务碰的文件 + todo 状态更新，**绝不 `git add -A`**
-8. 勾掉任务，停下来
+## 实施
 
-## 规则
+1. 读任务验收标准、相关实现、模式和类型。
+2. 核心行为或缺陷先写测试，确认预期失败（RED），再实现（GREEN），重构以行为测试守护；项目规定的配置、文档、样式等豁免直接适用。
+3. 开发中使用定向反馈，最终回归、构建和质量门按项目命令与时机执行。
+4. 实际取舍、踩坑和债务按项目事实归属记录；需要新增账本条目时遵循授权，不强制额外建文件。
+5. 同步真正变化的测试、文档和调用方，核对完整目标路径。
+6. 授权包含提交时仅选择本任务文件；提交粒度由项目和改动边界决定，禁止夹带无关修改。
 
-- **一次一片。** 做完一个任务停，不要顺手做下一个。
-- **本地验证，不要推上去试。** 能本地跑的必须本地跑通再提交；
-  把 CI / 部署当迭代循环，一轮 10 分钟换本地 1 秒。
-- **不越界。** SPEC 的「非目标」是硬边界，想加就先回去改 SPEC。
-- 遇到下面情况**停下来问**，不要硬闯：
-  - 测试改不通或构建坏了且没有明显修法 → 用 `/ct` 或直接问
-  - SPEC 有歧义，或任务需要 SPEC 没覆盖的决策
-  - 高风险不可逆：认证/权限、破坏性数据迁移、支付、删除、部署、密钥，
-    以及任何 `git revert` 撤不回来的操作
-- 一致性契约：改了行为就同步改测试、文档、`AGENTS.md` 里描述它的段落。
+## 边界
 
-## 何时进下一步
+按批准范围持续推进，不固定每完成一个任务就暂停。目标存在歧义、出现未批准的重要决定、权限不足或不可逆操作缺少授权时说明具体问题。
 
-`tasks/todo.md` 全部勾完、测试全绿。然后跑 `/t` 补验收与回归，再 `/rv`。
+本地可验证的先验证，不用 CI 或部署替代本地迭代；真实环境才能验证的说明缺证据部分。同一症状反复补丁时用 `/ct` 重新定位，不越过非目标顺手扩展。
 
-## Red Flags
-
-- 一个 commit 里塞了多个任务
-- `docs/intent/` 这一轮一个字没加，但你至少绕过了两个坑
-- 测试是后补的（先写实现再补测试 = 测试在描述实现，不是描述行为）
-- 顺手改了任务范围之外的文件
+最终行为与必要验证完成后交付；按任务需要进入 `/t`、`/rv`，不以阶段变化重复索取已有批准。

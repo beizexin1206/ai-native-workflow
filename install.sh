@@ -1,15 +1,15 @@
 #!/usr/bin/env sh
 # ai-native-workflow 步骤 1：把 skills 装到这台机器上（不进任何项目仓库）。
 #
-#   curl -fsSL https://raw.githubusercontent.com/kid7st/ai-native-workflow/main/install.sh | sh
+#   curl -fsSL https://raw.githubusercontent.com/beizexin1206/ai-native-workflow/main/install.sh | sh
 #
 # 重复执行安全：已克隆则 pull。
 #
-# 装完后在任意项目里跑 /init 完成步骤 2。
+# 装完后直接使用；需要接入项目约定时按需跑 /init。
 # 升级：cd ~/.ai-native-workflow && git pull —— 软链自动跟上。
 set -eu
 
-REPO="${AI_NATIVE_WORKFLOW_REPO:-https://github.com/kid7st/ai-native-workflow.git}"
+REPO="${AI_NATIVE_WORKFLOW_REPO:-https://github.com/beizexin1206/ai-native-workflow.git}"
 HOME_DIR="${AI_NATIVE_WORKFLOW_HOME:-$HOME/.ai-native-workflow}"
 
 if [ -d "$HOME_DIR/.git" ]; then
@@ -28,6 +28,13 @@ fi
 
 for dir in "$HOME/.agents/skills" "$HOME/.claude/skills" "$HOME/.qoder/skills"; do
   mkdir -p "$dir"
+  # /mr renamed to /pr: remove only this installation's obsolete link.
+  if [ -L "$dir/mr" ] && [ ! -f "$HOME_DIR/skills/mr/SKILL.md" ]; then
+    old_skill_source=$(readlink "$dir/mr")
+    if [ "$old_skill_source" = "$HOME_DIR/skills/mr" ] || [ "$old_skill_source" = "$HOME_DIR/skills/mr/" ]; then
+      rm "$dir/mr"
+    fi
+  fi
   for skill in "$HOME_DIR"/skills/*/; do
     [ -f "$skill/SKILL.md" ] || continue
     name=$(basename "$skill")
@@ -43,4 +50,4 @@ done
 
 echo "已装 $(ls -1 "$HOME_DIR"/skills | wc -l | tr -d ' ') 个 skill → ~/.agents/skills, ~/.claude/skills, ~/.qoder/skills"
 echo
-echo "下一步：在项目里打开 agent，说 /init"
+echo "技能已可使用；需要接入项目约定时说 /init"

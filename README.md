@@ -1,70 +1,49 @@
 # ai-native-workflow
 
-从产品需求定义、工作项规划到 Meegle + GitLab 研发协作的完整流程，打包成 skills、AGENTS.md 约定和模板。
-支持 Claude Code、Codex、Qoder、pi —— 同一份 `SKILL.md`，不维护多份副本。
+从产品需求定义、工作规划到实施、验证、审查和反馈处理的研发方法，打包为 skills、可选项目约定和模板。
+支持 Claude Code、Codex、Qoder、pi，同一份 `SKILL.md` 通过机器级软链接使用。
 
-## 两步安装
-
-**步骤 1 · 每台机器一次** —— 装能力（skills 不进任何项目仓库）：
+## 安装与使用
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/kid7st/ai-native-workflow/main/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/beizexin1206/ai-native-workflow/main/install.sh | sh
 ```
 
-克隆到 `~/.ai-native-workflow`，重复执行安全：已克隆则 `pull`。
+安装到 `~/.ai-native-workflow`，链接到 `~/.agents/skills`（Codex + pi）、`~/.claude/skills`、`~/.qoder/skills`。
+重复安装会更新源仓库；维护者已有本地修改时先处理工作区，不以更新覆盖修改。
 
-克隆到 `~/.ai-native-workflow`，软链到 `~/.agents/skills`（Codex + pi）、`~/.claude/skills`、`~/.qoder/skills`。
-升级：`cd ~/.ai-native-workflow && git pull`，软链自动跟上。
-
-**步骤 2 · 每个仓库一次** —— 装约定（这些要 commit）：
-
-```
-在项目里打开任意 agent，说 /init
-```
-
-注入 `AGENTS.md` 块、MR 模板、工作项模板、`docs/intent/`、项目级 skill 目录与软链。
+技能不要求项目先初始化。已有项目直接使用现有规范；需要接入项目时运行 `/init`，核对并补充真实缺口。
+平台 CLI、连接器、认证和权限使用项目实际配置，安装脚本只安装技能。
 
 ## 命令
 
-| 命令 | 干什么 |
+| 命令 | 职责 |
 |---|---|
-| `/pd` | 调研与业务信息 → 产品需求、产品设计、Meegle 工作项拆分与创建 |
-| `/bl` | 全部产品工作项 → 状态整理、相对优先级与迭代排期 |
-| `/s` | Meegle 工作项 → `SPEC.md`（可测验收 + 边界 + 影响面） |
-| `/p` | SPEC → `tasks/plan.md` + `tasks/todo.md`，**选型理由当场进 `docs/intent/`** |
-| `/b` | 实现下一个任务：测试先行、逐任务提交、坑与债进 `docs/intent/` |
-| `/t` | 验收标准用例化、全量回归、Prove-It 修 bug |
-| `/rv` | 语义 review。开 MR 前自审，或 `/rv <MR>` 审别人的（findings 落成可 resolve 的 discussion） |
-| `/mr` | 开 MR：六段描述从仓库产物汇总，Why 无出处则报缺口不编 |
-| `/fb` | 拉全 MR 反馈（含行内），逐条判断、修或驳、回复后 resolve |
-| `/sw` | 项目全景：目标、位置、进度、下一步、风险（读仓库 + GitLab + Meegle） |
-| `/rf` | 重构扫描：先结构后局部，只提案 |
-| `/ct` | 跳出补丁循环，从第一性原理重新框定问题 |
-| `/init` | 把当前仓库接入这套流程 |
+| `/pd` | 业务输入 → 产品需求、产品设计与纵向工作项拆分 |
+| `/bl` | 指定范围的工作项 → 状态核对、相对优先级与排期建议 |
+| `/s` | 已明确需求 → 可验证行为、边界与影响面 |
+| `/p` | 需求 → 实施计划、可验证任务与选型理由 |
+| `/b` | 按批准方案测试先行实施 |
+| `/t` | 验收用例、缺陷复现与项目规定的回归 |
+| `/rv` | 本地或远端变更的只读语义审查 |
+| `/pr` | 创建或更新项目平台的 PR/MR |
+| `/fb` | 读取完整反馈，判断、修正并据证据回复 |
+| `/sw` | 只读核对项目位置、交付证据与下一步 |
+| `/rf` | 结构与局部重构提案，不改文件 |
+| `/ct` | 停止重复补丁，重新诊断问题层级 |
+| `/init` | 按项目现状接入，保留已有规范和工具设置 |
 
 ## 设计取舍
 
-- **能力在机器上，约定在仓库里。** skill 跟项目无关，升级一次全项目生效；
-  `AGENTS.md` 和模板必须随仓库走、被 review、被版本固定。
-- **一份 `SKILL.md` 服务四个工具。** Claude Code 的 commands 已并入 skills，
-  Codex 与 pi 共读 `.agents/skills`，Qoder 读 `.qoder/skills` —— 用软链，不复制。
-- **产品 Agent 只有两个能力。** `/pd` 定义产品需求、产品设计并拆分工作项；`/bl` 在全部工作项中
-  统一优先级和排期。产品经理确认后才写入 Meegle，产品验收不在本阶段范围。
-- **Why 必须当场记。** What/How/Scope/Tests 都能从仓库产物汇总，
-  只有「为什么选这个方案」事后无法重建 —— 所以它在 `/p` `/b` 阶段就落进 `docs/intent/`，
-  `/rv` 和 MR 模板只做汇总与校验。
+- **能力在机器上，项目约定在仓库里。** 技能提供研发方法；需求来源、文档位置、测试分层、提交节奏、审批及发布方式按项目与用户约定执行。
+- **一个事实一个载体。** 已批准对话、项目文档或任务系统均可承载需求；采用已有权威来源，不为流程新建平行规格、计划或账本。
+- **Why 在决策时记录。** 真正取舍及其理由记录到已有方案或审查载体，不能事后从 diff 编造。
+- **按任务选择能力。** 不要求执行全部命令，不将工作项、分支、提交与审查请求固定为一一对应关系。
+- **平台使用与写入授权分开。** 读取、草拟、提交、评论、状态回写、合并和发布按用户授权与项目规则执行；工具可用不等于获准写入。
 
-## 结构
+## 项目入口与模板
 
-```
-ai-native-workflow/
-├── install.sh              # 步骤 1
-├── AGENTS.block.md         # 注入项目 AGENTS.md 的内容
-├── skills/                 # 13 个 skill，四个工具通用
-├── templates/
-│   ├── meegle-work-item.md          # 产品需求、设计、拆分与研测输入模板
-│   ├── merge-request.md             # MR 模板：What/Why/How/Scope/Tests/注意点
-│   ├── mr-contract-check.sh         # MR 约定的机器检查（可本地跑）
-│   └── gitlab-ci-mr-contract.yml    # 上面那个检查的 CI job（/init 时询问是否加）
-└── package.json            # pi package manifest（可选：pi install git:...）
-```
+`AGENTS.block.md` 是项目入口参考，`/init` 不覆盖项目已有规则，不自动增加 CI 或分支保护。
+
+`templates/product-requirement.md` 提供产品需求与拆分参考，`templates/merge-request.md` 提供 PR/MR 描述参考。
+已有项目模板优先；没有时按实际需要使用，目录、章节和文件名不构成使用技能的前置条件。

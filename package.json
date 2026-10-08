@@ -2,9 +2,13 @@
   "name": "ai-native-workflow",
   "version": "0.1.0",
   "private": true,
-  "description": "产品需求定义、工作项规划与 Meegle + GitLab 研发协作流程：产品 Agent、SPBT、review/feedback、AGENTS.md 与模板",
-  "keywords": ["pi-package"],
+  "description": "平台无关的产品定义、工作规划、实施验证与审查方法，沿用项目现有工具和约定",
+  "keywords": [
+    "pi-package"
+  ],
   "pi": {
-    "skills": ["./skills"]
+    "skills": [
+      "./skills"
+    ]
   }
 }
