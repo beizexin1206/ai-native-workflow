@@ -1,28 +1,22 @@
 ---
 name: rv
-description: Reviews a branch or merge request for semantic defects and posts each finding as its own resolvable GitLab thread. Use before opening an MR as a final self-check, when assigned to review someone's MR, when the user says /rv, or when asked to review code or a diff.
+description: Reviews local or remote changes for semantic defects, reporting findings in chat or publishing them when authorized. Use before opening an MR as a final self-check, when assigned to review someone's MR, when the user says /rv, or when asked to review code or a diff.
 ---
 
 # /rv —— 五轴之外的语义 review
 
 ## 两种模式
 
-先判模式，再进 review 步骤。**方法论两边完全相同**，只有 diff 从哪来、findings 发到哪不同。
+先读取项目规范、需求与批准方案，核对实际基线和范围，再判模式进入 review 步骤。**方法论两边完全相同**，只有 diff 从哪来、findings 发到哪不同。
 
 **本地模式**（无参数，或参数是 `local`）—— 开 MR 前的最后一道关：
 
 ```bash
-BASE=$(git merge-base ${2:-main} HEAD); git diff "$BASE"   # 含未提交改动
+git diff "$review_base"   # review_base 为已核实基线；新增文件另行读取
 ```
-findings **只打到 chat**，不碰 GitLab。
+findings **只打到 chat**，不写远端。基线取项目实际开发基线，不默认主干名。
 
-**MR 模式**（参数是 MR 号或 URL）：
-
-```bash
-glab mr diff <id>
-glab mr view <id> --json  # 或不带 --json 读描述
-```
-findings 先打到 chat，**再**作为 discussion 发到 MR（见末尾）。
+**远端模式**（参数是 PR/MR 标识或 URL）：使用项目实际平台的 CLI 或连接器读取描述、diff 和讨论。默认在对话报告；用户要求发布时才写入平台。
 
 **什么时候不该跑**：每次提交后、每轮改动成型后。它是整条分支的全量高成本 pass，
 fresh-context 的价值一次性兑现，反复重扫只是拖慢循环，不多抓 bug。
@@ -76,7 +70,7 @@ fresh-context 的价值一次性兑现，反复重扫只是拖慢循环，不多
 
 ## Step 4 · 过程性担忧
 
-- **静默决策**：diff 里有没有未在 MR 描述 / `docs/intent/` 里说明的选择？挖出来。
+- **静默决策**：diff 里有没有未在审查描述或已有方案载体里说明的选择？挖出来。
 - **顺手改动**：没人要求但顺带做的，列出来让作者确认动机。
 - **本该出现却没出现的改动**：改了 schema 没改 migration、改了接口没改全部调用方、
   改了行为没更新 `AGENTS.md` / 文档 / 测试 —— **漏改比错改更难发现**。
@@ -92,26 +86,8 @@ fresh-context 的价值一次性兑现，反复重扫只是拖慢循环，不多
 
 **空报告是合法且常见的输出。** 不要为了显得在做事而注水。
 
-## 写回 MR（仅 MR 模式）
+## 发布审查（仅授权时）
 
-一条 finding = **一条独立 discussion**，这样才能逐条 resolve。
+使用项目实际平台，一条 finding 对应可独立处理的评论或讨论。可定位到当前 diff 的用行内评论；无法准确定位的不硬塞行内位置。
 
-```bash
-# 取 diff refs（inline 定位需要）
-glab api "projects/:fullpath/merge_requests/<iid>" | jq .diff_refs
-
-# 能落到 diff 内某一行的 finding → 带 position 的 discussion
-glab api "projects/:fullpath/merge_requests/<iid>/discussions" -X POST \
-  -f body="<问题 + 建议方向>" \
-  -f position[position_type]=text \
-  -f position[new_path]=<file> -f position[new_line]=<line> \
-  -f position[base_sha]=<base> -f position[head_sha]=<head> -f position[start_sha]=<start>
-
-# 落不到 diff 内的 finding（跨文件 / 漏改 / 本该有却没有的改动）→ 不带 position 的 discussion
-glab mr note create <id> -m "<问题 + 建议方向>"
-```
-
-- 位置对不上时**不要硬塞 inline**，退回不带 position 的 discussion。
-- 没发现问题也发一条 `No findings.`，让 `/fb` 有明确信号。
-- 发完报告：MR 链接 + 发了几条带位置 / 几条不带位置。
-- **review session 永远不改代码。**
+没有发现时可在对话返回空报告；不默认发布空评论。发布后报告实际链接和结果，平台不支持线程解决时不伪造 resolve 状态。review session 不改代码。

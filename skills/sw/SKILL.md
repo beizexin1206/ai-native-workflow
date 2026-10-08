@@ -1,6 +1,6 @@
 ---
 name: sw
-description: Gives a decision-oriented snapshot of a project by reading the repo, GitLab merge requests and Meegle work items. Use when picking up a project after a break, before planning the next move, when the user says /sw, or when asked where things stand.
+description: Gives a decision-oriented snapshot of a project by reading the repo and available project task, review and delivery evidence. Use when picking up a project after a break, before planning the next move, when the user says /sw, or when asked where things stand.
 ---
 
 # /sw —— 项目全景
@@ -12,9 +12,9 @@ description: Gives a decision-oriented snapshot of a project by reading the repo
 
 ## 先读
 
-- 仓库：`AGENTS.md`、`README.md`、`docs/`、`docs/intent/`、最近的 commits、未提交改动
-- GitLab：`glab mr list`（open 的 MR、谁在等谁）、`glab ci status`（如果有）
-- Meegle：当前迭代里的工作项与状态（装了飞书项目 CLI 就直接读；没装就说明「未接入」，不要编）
+- 仓库：现有指导文件、知识地图、需求与设计载体、最近 commits、未提交改动
+- 实际代码平台：开放的 PR/MR、讨论与检查结果（可访问时）
+- 实际任务来源：相关工作项与状态；没有任务系统时用项目记录或用户输入，不编造状态
 
 不要为了显得全面而罗列文件。
 
@@ -24,8 +24,8 @@ description: Gives a decision-oriented snapshot of a project by reading the repo
    已经过时、或与现在的代码矛盾，**直接指出来**。
 
 2. **当前位置**
-   - 当前分支、最近 5–10 个 commit（每条一行）、open MR、未提交改动
-   - Meegle 上进行中的工作项与状态
+   - 当前分支、最近 5–10 个 commit（每条一行）、开放的 PR/MR、未提交改动
+   - 任务记录中进行中的工作项与状态
    - 有没有半成品、坏掉的东西
 
 3. **进度 vs 目标**
@@ -46,6 +46,6 @@ description: Gives a decision-oriented snapshot of a project by reading the repo
 
 - **只读扫描，不写文件、不改文件。**
 - 文档说 X、代码做 Y —— 点名冲突，不要平均化。
-- Meegle 状态与仓库现状对不上（工作项写着「已完成」但代码没合），**这是最值得报的一类**。
+- 任务记录状态与仓库现状对不上（工作项写着「已完成」但代码没合），**这是最值得报的一类**。
 - 不确定就写「未知」，不要猜。
 - 不要复述我的问题，不要废话。

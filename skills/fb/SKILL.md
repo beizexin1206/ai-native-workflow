@@ -1,59 +1,26 @@
 ---
 name: fb
-description: Pulls every unresolved thread on a merge request, judges each one, proposes fixes, and resolves threads only after replying. Use when your MR has review comments, when the user says /fb, or when asked to handle review feedback.
+description: Read complete review feedback on a PR or MR, evaluate it, fix authorized issues and reply before resolving supported threads. Use for /fb or handling review feedback.
 ---
 
-# /fb —— 处理 MR 上的反馈
+# /fb —— 处理审查反馈
 
-## 先把 comment 拿全
+## 先把反馈拿全
 
-MR 上的反馈分散在三处，**只看一处会漏**：
+使用项目实际平台的 CLI 或连接器，读取顶层评论、reviews、行内讨论及后续回复，核对分页、当前提交和已解决状态。不能只读描述或第一屏。
 
-```bash
-glab mr view <id>                                   # MR 描述与顶层讨论
-glab mr note list <id>                              # 所有 discussion（含行内）
-glab api "projects/:fullpath/merge_requests/<iid>/discussions"   # 完整结构：谁提的、resolved 没、锚在哪一行
-```
+## 逐条判断
 
-用 API 那条拿 `id` / `resolved` / `position`，因为要按 discussion 逐条 resolve，
-而 `resolved: false` 的才是待办。
+- 合理：给修复方案、影响面与依据。
+- 不合理或超范围：说明有意设计、反证或为何属于另一项需求。
+- 不清楚：提出具体澄清，不猜着改。
 
-## 逐条判断，不要照单全收
+集中列出处理意见，按项目审批和已有授权实施，不改一条问一次，也不因阶段切换重复要求批准。核对当前代码，已经修正或被后续决定取代的反馈不重复处理。
 
-对每条 comment 先判断**它说得对不对**：
+## 修正与回复
 
-- **对** → 给修复方案（改哪个文件、怎么改、影响面）
-- **不对 / 不该现在做** → 写清理由：为什么这里是有意为之，或为什么它属于另一个工作项
-- **看不懂** → 在 thread 里回问，不要猜着改
+复现缺陷后修复，按项目策略验证并同步对应文档。远端回复须在用户授权范围内，使用实际平台原生回复或评论能力。
 
-**先给方案，等我点头再动手改代码。** 一次性把所有 comment 的处理意见列出来，
-让我一次决策，而不是改一条问一次。
+每项先回复处理结果、代码版本及验证，再在平台支持且已完成时解决讨论。不将仅阅读、未回答或未完成的意见标记为解决；平台没有 resolve 机制时以实际回复和状态报告为准。
 
-输出形状：
-
-```
-1. <file:line> <comment 摘要>
-   判断：合理 / 不合理 / 需澄清
-   处理：<怎么改，或为什么不改>
-```
-
-## 改完再 resolve
-
-每条 discussion 只有两种结局：**修掉**，或**带理由不修**。两种都要先回复，再 resolve：
-
-```bash
-glab mr note create <id> -m "..."          # 回复（或在 discussion 里回）
-glab mr note resolve <discussion-id> <id>  # 回复之后才 resolve
-```
-
-**未 resolve 的 discussion 不得合入。** 只读不处理的 thread 不要 resolve ——
-resolve 表示这条已经被回答，不是「我看过了」。
-
-处理完报告：改了几条、驳回几条（各自理由一句话）、还剩几条未 resolve。
-
-## Red Flags
-
-- 只用 `glab mr view` 拿反馈，漏掉行内 discussion
-- 反射性地照 comment 改，没判断它对不对
-- 改完直接 resolve，没在 thread 里回复
-- 一条 discussion 里塞了多个问题却整条 resolve 掉
+报告修正、带理由未采纳、待澄清及未完成的实际事项。不顺手合并、发布或关闭外部工作项。

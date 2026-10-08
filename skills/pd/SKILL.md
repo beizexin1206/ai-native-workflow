@@ -1,16 +1,16 @@
 ---
 name: pd
-description: Turns product research, business information, user feedback and existing-system context into a concrete product requirement, product design, and a set of vertically sliced Meegle work items. Use when the user says /pd, asks to define or design a product requirement, wants to turn research into requirements, or needs to split and create Meegle work items before development.
+description: Turns product research, business information, user feedback and existing-system context into a concrete product requirement, product design, and vertically sliced work items using the project's existing requirement source. Use when the user says /pd, asks to define or design a product requirement, wants to turn research into requirements, or needs to split product work items before development.
 ---
 
-# /pd —— 业务输入 → 产品需求、产品设计与 Meegle 工作项
+# /pd —— 业务输入 → 产品需求、产品设计与工作项
 
-把分散的调研和业务信息整理为可共同评审的产品定义，再拆成可独立交付的 Meegle 工作项。
+把分散的调研和业务信息整理为可共同评审的产品定义，再拆成可独立交付的工作项。
 这一步不做技术方案、不排期，也不进入研发实现。
 
 **全程只用产品经理的视角思考和写作。** 描述用户、场景、问题、规则和产品行为；
 不写代码、接口、字段、表结构、技术选型、架构或实现步骤，也不用它们论证方案可行性。
-技术影响面由 `/s` 读代码后写进 `SPEC.md`，实现方案由 `/p` 负责。
+技术影响面由 `/s` 读代码后写入项目已有规格载体，实现方案由 `/p` 负责。
 
 ## 输入
 
@@ -21,9 +21,9 @@ description: Turns product research, business information, user feedback and exi
 - 历史需求、已有产品能力和已否决方案
 - 产品文档、界面、流程和术语
 - 现有系统对用户呈现的行为，以及已知的产品级限制（用产品语言转述，不复制技术细节）
-- Meegle 中已有或相似的工作项
+- 项目已有或相似的需求与工作项
 
-装了飞书项目 CLI 就直接读取相关工作项；没装就让用户提供内容或链接。
+通过项目已有 CLI 或连接器读取相关资料；没有任务系统时使用用户对话、项目文档或提供的资料，不要求安装工具。
 原始诉求只是输入，不直接等于产品需求。
 
 ## 工作流
@@ -69,17 +69,16 @@ description: Turns product research, business information, user feedback and exi
 - 标明父工作项、依赖和与其他工作项的关系
 - 小到能进入一次可控的研发迭代
 
-使用 `docs/templates/meegle-work-item.md` 的结构生成完整草稿。需要多个工作项时，先给拆分总表，
-再给每个工作项的完整描述。模板里「影响面」只填上下游和兼容性这类业务可感知的影响；技术影响不在 Meegle 记录。
+优先使用项目已有需求载体和模板；需要参考时可使用本包 `templates/product-requirement.md`。需要多个工作项时，先给拆分关系，再给各项描述；产品影响面只表达业务可感知的上下游和兼容性，内部技术影响由后续规格和方案承载。
 
 ### 5. 确认后创建
 
-先展示产品需求、产品设计、拆分关系和工作项草稿，等待产品经理明确确认。
+展示产品需求、产品设计、拆分关系和工作项草稿，按用户授权及项目审批约定确认；已有明确批准不重复索取。
 
-- 有 Meegle 写入能力：确认后创建工作项，回报工作项号、链接、父子关系与依赖。
-- 无 Meegle 写入能力：输出可直接复制的草稿，不声称已经创建。
+- 用户要求写入任务系统且有权限时，使用项目实际平台创建或更新，核对结果并报告链接与关系。
+- 未要求外部写入或无写入能力时，交付草稿，不声称已经创建。
 
-创建后运行 `/bl`，把新工作项放进全部产品工作项中排序和排期；被选入迭代的工作项再运行 `/s`。
+需要跨工作项排序和排期时使用 `/bl`；目标与范围已经明确时可进入 `/s`，不以创建工作项或排入迭代为强制前置。
 
 ## 输出顺序
 
@@ -87,20 +86,20 @@ description: Turns product research, business information, user feedback and exi
 2. 产品需求：用户、场景、问题、目标、成功标准、范围与非目标
 3. 产品设计：流程、结构、规则、状态、权限和异常场景
 4. 工作项拆分总表：名称、价值、父项、依赖、边界
-5. Meegle 工作项草稿
+5. 工作项草稿
 6. 创建结果或下一步
 
 ## 规则
 
-- **产品经理保留最终判断。** Agent 未获明确确认不得创建工作项。
-- **不在本地复制第二套需求真相。** 正式需求进入 Meegle；仓库从 `/s` 生成 SPEC。
+- **产品决定由用户或项目指定负责人确认。** 创建或更新外部工作项须在授权范围内。
+- **不复制第二套需求真相。** 已有需求原地更新，规格引用需求来源；文件与系统归属沿用项目约定。
 - **不做优先级与排期。** 只记录明确的业务截止时间和依赖，整体排序交给 `/bl`。
 - **不做技术方案。** 研发可以共同补约束和影响，但要翻译成产品语言；实现设计进入 `/p`。
 - **产出中不得出现代码或实现内容。** 包括代码片段、接口/字段/表结构、库与框架名、
   架构分层、部署和迁移步骤。需要表达限制时，只说它对用户和业务意味着什么。
   例外：做的就是 API/SDK 这类面向开发者的产品时，对外契约本身就是产品行为，该写；
   禁的是内部接口、存储字段和实现设计。
-- **不处理产品验收。** 本 skill 的终点是工作项创建与关联。
+- **不执行产品验收。** 本 skill 交付产品定义与必要拆分，是否创建外部工作项由任务决定。
 
 ## Red Flags
 
@@ -108,7 +107,7 @@ description: Turns product research, business information, user feedback and exi
 - 产品设计只列功能名，没有流程、规则、状态和异常场景
 - 按前端、后端、测试拆工作项
 - 每个工作项都依赖其他项，无法独立交付价值
-- 没有展示草稿就直接写入 Meegle
+- 没有授权就写入任务系统
 - 输入缺失却输出了确定结论
 - 产品设计或工作项里写了接口、字段、表结构、技术选型或代码
 - 用技术实现难度代替产品判断来决定范围

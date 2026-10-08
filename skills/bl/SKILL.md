@@ -1,23 +1,23 @@
 ---
 name: bl
-description: Builds a complete view of product Meegle work items, reconciles their real status, detects duplicates and dependencies, and proposes relative priority and iteration scheduling. Use when the user says /bl, asks to整理 backlog, review all work items, reprioritize product requirements, plan an iteration, or understand status and scheduling across the product portfolio.
+description: Builds a complete view of product work items from the project's existing sources, reconciles their real status, detects duplicates and dependencies, and proposes relative priority and iteration scheduling. Use when the user says /bl, asks to整理 backlog, review all work items, reprioritize product requirements, plan an iteration, or understand status and scheduling across the product portfolio.
 ---
 
 # /bl —— 全部产品工作项 → 优先级与排期
 
 把所有相关产品工作项放进同一个比较集合，核对真实状态，形成产品经理可一次决策的排序和排期方案。
-默认只读；未获确认不批量修改 Meegle。
+默认只读；未获确认不批量修改权威工作项记录。
 
 ## 输入
 
-- Meegle 中全部相关产品工作项，而不只是当前迭代
+- 项目指定范围内的产品工作项，而不只是当前迭代
 - 项目业务目标、阶段目标和关键里程碑
 - 现有优先级枚举、状态流转与迭代规则
 - 产品、研发、测试 owner 与团队可用容量
 - 工作项依赖、截止时间、复杂度、风险和不确定性
-- SPEC、分支、commit、MR、测试和发布证据（存在时）
+- 规格、分支、commit、PR/MR、测试和发布证据（存在时）
 
-装了飞书项目 CLI 就直接读取；没装就使用用户提供的导出或列表，并在输出开头说明覆盖范围。
+使用项目实际任务系统、仓库记录或用户提供的列表，并在输出开头说明覆盖范围。
 无法确认是全量数据时，不得声称完成了全量排序。
 
 ## 工作流
@@ -29,15 +29,15 @@ description: Builds a complete view of product Meegle work items, reconciles the
 ### 2. 归一化工作项
 
 为每个工作项整理：编号、标题、产品目标、状态、优先级、迭代、owner、创建与更新时间、父子关系、
-依赖、阻塞、复杂度、截止时间、SPEC / MR / 测试关联。
+依赖、阻塞、复杂度、截止时间、规格 / PR/MR / 测试关联。字段按现有记录取用，没有编号或迭代字段不构成阻塞，不编造缺失值。
 
 ### 3. 核对真实状态
 
-Meegle 状态必须与交付证据交叉核对。例如：
+工作项状态必须与交付证据交叉核对。例如：
 
-- 写着开发中，但没有 SPEC、分支或 commit
-- 写着待测试，但没有 MR 或可验证版本
-- MR 已合入，工作项仍停在开发中
+- 写着开发中，但没有项目约定的实施证据
+- 写着待测试，但没有可验证版本
+- PR/MR 已合入，工作项仍停在开发中
 - 长期阻塞，但没有依赖项、原因或 owner
 
 同时识别重复、失效、范围重叠、过大、信息不完整和长时间不动的工作项。
@@ -69,7 +69,7 @@ Meegle 状态必须与交付证据交叉核对。例如：
 
 ### 6. 确认后回写
 
-一次性展示状态修正、优先级和排期建议。产品经理确认具体调整项后，才批量更新 Meegle；
+一次性展示状态修正、优先级和排期建议。用户或项目指定负责人确认具体调整项后，才更新实际权威载体；
 未被确认的项目保持不变。回写后重新读取受影响工作项，核对状态、优先级和迭代是否生效。
 
 ## 输出顺序
@@ -88,7 +88,7 @@ Meegle 状态必须与交付证据交叉核对。例如：
 - **不只看当前迭代。** 排序必须有完整或明确限定的比较集合。
 - **不替产品经理做最终排序。** Agent 提供证据、冲突和方案。
 - **不重写产品需求。** 定义不清或范围过大的工作项返回 `/pd`。
-- **不进入研发实现。** 被排入迭代的工作项再运行 `/s`。
+- **不进入研发实现。** 目标和范围明确后可进入 `/s`，是否采用迭代排期由项目决定。
 - **不处理产品验收。** 已完成项只核对状态与证据，不执行验收。
 
 ## Red Flags
@@ -97,5 +97,5 @@ Meegle 状态必须与交付证据交叉核对。例如：
 - 所有工作项都被排成最高优先级
 - 只按提出人级别、创建时间或声音大小排序
 - 排期不看依赖、owner 和团队容量
-- Meegle 状态与 MR / 代码证据冲突却未指出
+- 工作项状态与 PR/MR / 代码证据冲突却未指出
 - 未经确认批量修改工作项
